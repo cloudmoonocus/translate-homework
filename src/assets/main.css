@@ -1,35 +1,31 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+:root {
+    --fontSizeSmall: 0.8rem;
+    --fontSizeMedium: 1rem;
+    --fontSizeLarge: 1.2rem;
+    --fontSizeXLarge: 1.8rem;
+    --fontSizeXXLarge: 3rem;
+    --fontSizeXXXLarge: 4rem;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: 2px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 10px;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+::-webkit-scrollbar-thumb:hover {
+    background: #a5a5a5;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgb(145, 145, 145);
 }
