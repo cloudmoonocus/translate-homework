@@ -42,8 +42,7 @@ const { locale } = useI18n()
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
-        width: 40%;
-        height: 200px;
+        width: 45%;
 
         background: -webkit-linear-gradient(315deg, #5094e2 25%, #0e27a3);
         background-clip: text;
@@ -56,6 +55,7 @@ const { locale } = useI18n()
         }
 
         .main_right_2 {
+            margin-top: 3vh;
             font-size: var(--fontSizeXLarge);
             font-weight: 400;
         }
@@ -67,7 +67,6 @@ const { locale } = useI18n()
         justify-content: space-around;
         align-items: center;
         width: 40%;
-        height: 250px;
 
         background: -webkit-linear-gradient(315deg, #5094e2 25%, #0e27a3);
         background-clip: text;
@@ -75,11 +74,14 @@ const { locale } = useI18n()
         -webkit-text-fill-color: transparent;
 
         .main_right_1 {
-            font-size: var(--fontSizeXXXLarge);
+            text-align: center;
+            font-size: var(--fontSizeXXLarge);
             font-weight: 700;
         }
 
         .main_right_2 {
+            text-align: center;
+            margin-top: 3vh;
             font-size: var(--fontSizeXLarge);
             font-weight: 400;
         }

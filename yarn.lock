@@ -1402,7 +1402,14 @@ vue-router@^4.1.6:
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
-vue@^3.2.47:
+vue3-slide-verify@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmmirror.com/vue3-slide-verify/-/vue3-slide-verify-1.1.4.tgz#fdb623b802468f15df8b8b5d481ab0dc63948d30"
+  integrity sha512-er2d9TSPsF5CcmoxBfP6eSkc4IHROwXu6Ytghkwf52apXpXy2ZtW3tOgHnmFWb3GHESKxZ9bsFXqSX+fJ6hjrg==
+  dependencies:
+    vue "^3.2.25"
+
+vue@^3.2.25, vue@^3.2.47:
   version "3.2.47"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==

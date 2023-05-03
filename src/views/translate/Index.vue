@@ -20,7 +20,11 @@
                 <span>{{ $t('TL hints') }}</span>
             </el-menu-item>
         </el-menu>
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+            <keep-alive>
+                <component :is="Component" />
+            </keep-alive>
+        </router-view>
     </div>
 </template>
 
@@ -53,6 +57,5 @@ watch(
     width: 250px;
     height: calc(100vh - 70px);
     padding-top: 2vh;
-    padding-left: 2vw;
 }
 </style>

@@ -2,13 +2,13 @@
     <div class="hm_main">
         <div class="hm_main_select">
             <el-select v-model="sourceLan" placeholder="源语言">
-                <el-option label="555" value="666" />
+                <el-option label="中文" value="zh" />
             </el-select>
             <el-icon>
                 <Switch />
             </el-icon>
             <el-select v-model="targetLan" placeholder="目标语言">
-                <el-option label="555" value="666" />
+                <el-option label="English" value="en" />
             </el-select>
         </div>
         <div class="hm_main_btn">
@@ -22,8 +22,8 @@
 <script setup>
 import { ref } from 'vue'
 
-const sourceLan = ref('en')
-const targetLan = ref('zh')
+const sourceLan = ref('English')
+const targetLan = ref('简体中文')
 </script>
 
 <style lang="scss" scoped>
