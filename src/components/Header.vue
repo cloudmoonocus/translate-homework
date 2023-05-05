@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :ellipsis="false" :router="true">
+    <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :ellipsis="false" :router="true" v-if="showKey">
         <el-menu-item index="/home">G11N TranSpace</el-menu-item>
         <div class="flex-grow" />
         <el-menu-item index="/home">{{ $t("Index") }}</el-menu-item>
@@ -39,12 +39,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
 const router = useRouter()
+const showKey = ref(true)
 
 // 默认菜单
 const activeIndex = ref(router.currentRoute.value.path)
@@ -52,7 +53,13 @@ const activeIndex = ref(router.currentRoute.value.path)
 // 解决当使用浏览器回退功能时菜单不跟随聚焦的问题
 watch(
     () => router.currentRoute.value.path,
-    () => activeIndex.value = router.currentRoute.value.path
+    () => {
+        activeIndex.value = router.currentRoute.value.path
+        showKey.value = false
+        nextTick(() => {
+            showKey.value = true
+        })
+    }
 )
 
 // 切换语言

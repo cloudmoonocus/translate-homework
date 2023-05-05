@@ -16,13 +16,11 @@
                     </el-form-item>
                 </el-form>
             </div>
-            <div class="main_ctx_verify">
+            <div class="main_ctx_btn">
                 <el-button :type="signInData.isVerify ? 'success' : 'info'" plain :disabled="signInData.isVerify"
                     @click="dialogVisible = true">
                     {{ signInData.isVerify ? $t('VerifySuccess') : $t('Verify') }}
                 </el-button>
-            </div>
-            <div class="main_ctx_btn">
                 <el-button type="primary" @click="submitForm">{{ $t('Register') }}</el-button>
                 <el-button @click="resetForm">{{ $t('Reset') }}</el-button>
             </div>
@@ -71,6 +69,7 @@ function resetForm() {
 .main {
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     background-color: #F2F6FC;
 
     min-height: calc(100vh - 70px);
@@ -78,10 +77,9 @@ function resetForm() {
 
 .main_ctx {
     margin-top: 10vh;
+    padding: 4vh 0 8vh;
 
-    width: 45vw;
-    min-height: 60vh;
-    height: 65vh;
+    width: 40vw;
 
     border-radius: 15px;
     background-color: #fefefe;
@@ -92,10 +90,9 @@ function resetForm() {
     align-items: center;
 
     &_title {
-        margin-top: 4vh;
-        font-size: var(--fontSizeXmLarge);
+        font-size: var(--fontSizeXXLarge);
         font-weight: 700;
-        line-height: 50px;
+        line-height: 5rem;
 
         background: -webkit-linear-gradient(315deg, #5094e2 25%, #0e27a3);
         background-clip: text;
@@ -105,8 +102,9 @@ function resetForm() {
 
     &_intro {
         margin-top: 3vh;
-        font-size: var(--fontSizeLarge);
+        font-size: var(--fontSizeXLarge);
         font-weight: 500;
+        line-height: 2rem;
 
         background: -webkit-linear-gradient(315deg, #678d9d 25%, #2f4d99);
         background-clip: text;
@@ -116,24 +114,16 @@ function resetForm() {
 
     &_form {
         margin-top: 5vh;
-        width: 60%;
+        width: 70%;
+        height: auto;
     }
 
     &_btn {
-        margin-top: 5vh;
-        width: 25%;
+        margin-top: 3vh;
+        width: auto;
         display: flex;
         justify-content: space-between;
     }
-}
-
-:deep(.main_verify) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    height: 300px;
 }
 
 :deep(.el-dialog__header) {
