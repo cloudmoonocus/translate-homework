@@ -15,6 +15,7 @@ export default {
     'Document list': '文档列表',
     'Login': '登录',
     'Username': '用户名',
+    'UserEmail': '邮箱',
     'Password': '密码',
     'RepeatPassword': '重复密码',
     'Verify': '点击我进行验证',

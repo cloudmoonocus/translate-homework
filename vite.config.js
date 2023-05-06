@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -28,11 +27,11 @@ export default defineConfig({
         host: '0.0.0.0',
         open: true,
     },
-    proxy: {
-        '/': {
-            target: 'http://121.36.68.89:8008/',
-            ws: false,
-            changeOrigin: false,
-        },
-    },
+    // proxy: {
+    //     '/': {
+    //         target: 'http://121.36.68.89:8008/',
+    //         ws: false,
+    //         changeOrigin: false,
+    //     },
+    // },
 })

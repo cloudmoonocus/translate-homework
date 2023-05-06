@@ -1,6 +1,8 @@
 <template>
     <div class="mt_main">
-        <HeaderMenu class="tool"></HeaderMenu>
+        <HeaderMenu class="tool" :sourceLanList="sourceLanList" :targetLanList="targetLanList" @translate="translate"
+            @resetText="resetText">
+        </HeaderMenu>
         <div class="mt_main_textarea">
             <el-input class="mt_main_textarea_item" v-model="sourceDoc" :rows="15" type="textarea"
                 :placeholder="$t('Please enter the text to be translated here')" />
@@ -13,9 +15,46 @@
 <script setup>
 import HeaderMenu from '../../components/translate/HeaderMenu.vue'
 import { ref } from 'vue'
+import { mt } from '../../api/qualityassurance';
+import message from '../../utils/message';
+
+// 源语言列表
+const sourceLanList = ref([{
+    label: '简体中文',
+    value: 'zh'
+}, {
+    label: 'English',
+    value: 'en'
+}])
+// 目标语言列表
+const targetLanList = ref([{
+    label: 'English',
+    value: 'en'
+}, {
+    label: '简体中文',
+    value: 'zh'
+}])
 
 const sourceDoc = ref(null)
 const targetDoc = ref(null)
+
+// 翻译
+function translate(from, to) {
+    mt(sourceDoc.value, from, to).then((value) => {
+        if (value.code !== 200) {
+            message.error(value.msg)
+        } else {
+            targetDoc.value = value.data.translatedText
+            message.success('翻译完成')
+        }
+    })
+}
+
+// 重置文档
+function resetText() {
+    sourceDoc.value = ''
+    targetDoc.value = ''
+}
 </script>
 
 <style lang="scss" scoped>

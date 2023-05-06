@@ -16,6 +16,7 @@ export default {
     'Document list': 'Document list',
     'Login': 'Login',
     'Username': 'Username',
+    'UserEmail': 'Email',
     'Password': 'Password',
     'RepeatPassword': 'Repeat password',
     'Verify': 'Click to verify',

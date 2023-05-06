@@ -9,7 +9,7 @@
                         <el-input v-model="signInData.name" :suffix-icon="User" />
                     </el-form-item>
                     <el-form-item :label="$t('Password')" required>
-                        <el-input v-model="signInData.password" :suffix-icon="Lock" />
+                        <el-input v-model="signInData.password" :suffix-icon="Lock" type="password" show-password />
                     </el-form-item>
                 </el-form>
             </div>
@@ -22,7 +22,7 @@
                 <el-button @click="resetForm">{{ $t('Reset') }}</el-button>
             </div>
         </div>
-        <el-dialog v-model="dialogVisible" width="23%" class="main_verify" :show-close="false" destroy-on-close>
+        <el-dialog v-model="dialogVisible" width="20%" class="main_verify" :show-close="false" destroy-on-close>
             <Verify @success="onVerifySuccess"></Verify>
         </el-dialog>
     </div>
@@ -32,12 +32,19 @@
 import { reactive, ref } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue'
 import Verify from '../components/Verify.vue';
+import { login } from '../api/user';
+import { signInforRight } from '../utils/signInforRight';
+import message from '../utils/message';
+import { useUserStore } from '../stores/user';
+import router from '../router';
 
+const userData = useUserStore()
 // 登录信息
 const signInData = reactive({
     name: '',
     password: '',
-    isVerify: false
+    isVerify: false,
+    isRegister: false
 })
 
 // 验证
@@ -49,7 +56,30 @@ function onVerifySuccess() {
 
 // 登录
 function submitForm() {
-    alert('登录');
+    signInforRight(signInData).then(() => {
+        if (signInData.isVerify) {
+            const loginData = {
+                username: signInData.name,
+                password: signInData.password,
+            }
+            login(loginData).then((val) => {
+                if (val.code !== 200) {
+                    message.error(val.msg)
+                } else {
+                    localStorage.setItem('Authorization', val.data.token)
+                    localStorage.setItem('id', val.data.id)
+                    localStorage.setItem('userName', signInData.name)
+                    userData.token = val.data.token
+                    userData.id = val.data.id
+                    userData.userName = signInData.name
+                    router.replace('/home')
+                    message.success(val.msg)
+                }
+            })
+        } else message.warning('请进行安全验证')
+    }, (error) => {
+        message.warning(error)
+    })
 }
 
 // 重置表单
@@ -119,6 +149,14 @@ function resetForm() {
         display: flex;
         justify-content: space-between;
     }
+}
+
+:deep(.main_verify) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }
 
 :deep(.el-dialog__header) {

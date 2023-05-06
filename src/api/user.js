@@ -2,36 +2,25 @@ import request from './handle/axios'
 
 // 登录方法
 export function login(data) {
-    let data_ = {
-        'username': data.username,
-        'password': data.password,
-    }
     return request({
         url: '/login',
         headers: {
             isToken: false,
         },
         method: 'post',
-        data: data_,
+        data: JSON.stringify(data),
     })
 }
 
 // 注册方法
 export function register(data) {
-    let data_ = {
-        'username': data.username,
-
-        'password': data.password,
-
-        'email': data.email,
-    }
     return request({
         url: '/register',
         headers: {
             isToken: false,
         },
         method: 'post',
-        data: data_,
+        data: JSON.stringify(data),
     })
 }
 
@@ -43,7 +32,7 @@ export function loginout(data) {
             isToken: true,
         },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
@@ -76,7 +65,7 @@ export function getoInfo(data) {
             'Authorization': getToken(),
             'Content-Type': 'application/json',
         },
-        data: data,
+        data: JSON.stringify(data),
     }
     return axios(config)
 }

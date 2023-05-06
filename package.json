@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "axios": "^1.4.0",
     "axios-retry": "^3.4.0",
     "element-plus": "^2.3.4",
     "normalize.css": "^8.0.1",

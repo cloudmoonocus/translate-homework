@@ -4,28 +4,31 @@
             <div class="main_ctx_title">{{ $t('Registration entry') }}</div>
             <div class="main_ctx_intro">{{ $t('Welcome') }}</div>
             <div class="main_ctx_form">
-                <el-form :model="signInData" label-width="auto">
+                <el-form :model="signUpData" label-width="auto">
                     <el-form-item :label="$t('Username')" required>
-                        <el-input v-model="signInData.name" :suffix-icon="User" />
+                        <el-input v-model="signUpData.name" :suffix-icon="User" />
+                    </el-form-item>
+                    <el-form-item :label="$t('UserEmail')" required>
+                        <el-input v-model="signUpData.email" :suffix-icon="Message" />
                     </el-form-item>
                     <el-form-item :label="$t('Password')" required>
-                        <el-input v-model="signInData.password" :suffix-icon="Lock" />
+                        <el-input v-model="signUpData.password" :suffix-icon="Lock" type="password" show-password />
                     </el-form-item>
                     <el-form-item :label="$t('RepeatPassword')" required>
-                        <el-input v-model="signInData.repeatPassword" :suffix-icon="Lock" />
+                        <el-input v-model="signUpData.repeatPassword" :suffix-icon="Lock" type="password" show-password />
                     </el-form-item>
                 </el-form>
             </div>
             <div class="main_ctx_btn">
-                <el-button :type="signInData.isVerify ? 'success' : 'info'" plain :disabled="signInData.isVerify"
+                <el-button :type="signUpData.isVerify ? 'success' : 'info'" plain :disabled="signUpData.isVerify"
                     @click="dialogVisible = true">
-                    {{ signInData.isVerify ? $t('VerifySuccess') : $t('Verify') }}
+                    {{ signUpData.isVerify ? $t('VerifySuccess') : $t('Verify') }}
                 </el-button>
                 <el-button type="primary" @click="submitForm">{{ $t('Register') }}</el-button>
                 <el-button @click="resetForm">{{ $t('Reset') }}</el-button>
             </div>
         </div>
-        <el-dialog v-model="dialogVisible" width="23%" class="main_verify" :show-close="false" destroy-on-close>
+        <el-dialog v-model="dialogVisible" width="20%" class="main_verify" :show-close="false" destroy-on-close>
             <Verify @success="onVerifySuccess"></Verify>
         </el-dialog>
     </div>
@@ -33,35 +36,56 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { User, Lock } from '@element-plus/icons-vue'
+import { User, Lock, Message } from '@element-plus/icons-vue'
 import Verify from '../components/Verify.vue';
+import { register } from '../api/user'
+import { signInforRight } from '../utils/signInforRight';
+import message from '../utils/message';
 
 // 注册信息
-const signInData = reactive({
+const signUpData = reactive({
     name: '',
+    email: '',
     password: '',
     repeatPassword: '',
-    isVerify: false
+    isVerify: false,
+    isRegister: true
 })
 
 // 验证
 const dialogVisible = ref(false)
 function onVerifySuccess() {
-    signInData.isVerify = true
+    signUpData.isVerify = true
     dialogVisible.value = false
 }
 
 // 注册
 function submitForm() {
-    alert('登录');
+    signInforRight(signUpData).then(() => {
+        if (signUpData.isVerify) {
+            const registerData = {
+                username: signUpData.name,
+                password: signUpData.password,
+                email: signUpData.email
+            }
+            register(registerData).then(() => {
+                if (val.code !== 200) {
+                    message.error(val.msg)
+                } else message.success('注册成功')
+            })
+        } else message.warning('请进行安全验证')
+    }, (error) => {
+        message.warning(error)
+    })
 }
 
 // 重置表单
 function resetForm() {
-    signInData.name = ''
-    signInData.password = ''
-    signInData.repeatPassword = ''
-    signInData.isVerify = false
+    signUpData.name = ''
+    signUpData.email = ''
+    signUpData.password = ''
+    signUpData.repeatPassword = ''
+    signUpData.isVerify = false
 }
 </script>
 
@@ -124,6 +148,14 @@ function resetForm() {
         display: flex;
         justify-content: space-between;
     }
+}
+
+:deep(.main_verify) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }
 
 :deep(.el-dialog__header) {

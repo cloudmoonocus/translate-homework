@@ -14,8 +14,9 @@
             <el-menu-item index="/tsl/sc">{{ $t('Spell check') }}</el-menu-item>
             <el-menu-item index="/tsl/ta">{{ $t('TL hints') }}</el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="/signin">{{ $t('Login') }}</el-menu-item>
-        <el-menu-item index="/signup">{{ $t('Register') }}</el-menu-item>
+        <el-menu-item index="/signin" v-if="!userData.token">{{ $t('Login') }}</el-menu-item>
+        <el-menu-item index="/signup" v-if="!userData.token">{{ $t('Register') }}</el-menu-item>
+        <el-menu-item index="/userInfor" v-else>{{ userData.userName }}</el-menu-item>
         <div class="flex-grow2" />
         <el-sub-menu index="null">
             <template #title>
@@ -42,7 +43,9 @@
 import { nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '../stores/user';
 
+const userData = useUserStore()
 const { locale } = useI18n()
 const router = useRouter()
 const showKey = ref(true)

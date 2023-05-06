@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'
 import { handleNetworkError } from './errorHandle'
 
 const requests = axios.create({
-    baseURL: process.env.VUE_APP_BASE_API,
+    baseURL: 'http://121.36.68.89:8008/',
     timeout: 10 * 1000,
 })
 

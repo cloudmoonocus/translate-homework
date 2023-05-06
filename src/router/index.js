@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { ElLoading } from 'element-plus'
+import message from '../utils/message'
 
 const routes = [
     {
@@ -25,6 +26,13 @@ const routes = [
         component: () => import('../views/SignUp.vue'),
         meta: {
             requireAuth: false,
+        },
+    },
+    {
+        path: '/userInfor',
+        component: () => import('../views/UserInfor.vue'),
+        meta: {
+            requireAuth: true,
         },
     },
     {
@@ -90,6 +98,7 @@ router.beforeEach((to, from, next) => {
                 path: '/signin',
                 replace: 'true',
             })
+            message.warning('请先登录')
         }
     } else {
         next()

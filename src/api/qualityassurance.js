@@ -4,19 +4,16 @@ import request from './handle/axios'
 export function mt(text, from, to) {
     const data = {
         'text': text,
-
         'from': from,
-
         'to': to,
     }
-    console.log(data)
     return request({
         url: '/mt',
         headers: {
             isToken: true,
         },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
@@ -26,15 +23,13 @@ export function hunspell(text, language) {
         'text': text,
         'language': language,
     }
-    console.log(getToken())
-    console.log(data)
     return request({
         url: '/hunspell',
         headers: {
             isToken: true,
         },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
@@ -42,26 +37,22 @@ export function hunspell(text, language) {
 export function tmSearch(text, srcLang, tgtLang, similarity, caseSensitive) {
     const data = {
         'text': text,
-
         'srcLang': srcLang,
-
         'tgtLang': tgtLang,
-
         'similarity': similarity,
-
         'caseSensitive': caseSensitive,
     }
-    console.log(data)
     return request({
         url: '/tmSearch',
         headers: {
             isToken: true,
         },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
+// 语法检查
 export function check(text) {
     const data = {
         'text': text,
@@ -73,6 +64,6 @@ export function check(text) {
             isToken: false,
         },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }

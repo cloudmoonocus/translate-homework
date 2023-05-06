@@ -2,19 +2,20 @@
     <div class="hm_main">
         <div class="hm_main_select">
             <el-select v-model="sourceLan" placeholder="源语言">
-                <el-option label="中文" value="zh" />
+                <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" />
             </el-select>
             <el-icon>
                 <Switch />
             </el-icon>
             <el-select v-model="targetLan" placeholder="目标语言">
-                <el-option label="English" value="en" />
+                <el-option :label="val.label" :value="val.value" v-for="val in props.targetLanList" />
             </el-select>
         </div>
         <div class="hm_main_btn">
-            <el-button type="primary" round>{{ $t('Translate') }}</el-button>
-            <el-button round>{{ $t('Reset text') }}</el-button>
-            <el-button round>{{ $t('Reset language') }}</el-button>
+            <el-button type="primary" round @click="$emit('translate', sourceLan, targetLan)">{{ $t('Translate')
+            }}</el-button>
+            <el-button round @click="$emit('resetText')">{{ $t('Reset text') }}</el-button>
+            <el-button round @click="resetLan">{{ $t('Reset language') }}</el-button>
         </div>
     </div>
 </template>
@@ -22,8 +23,15 @@
 <script setup>
 import { ref } from 'vue'
 
-const sourceLan = ref('English')
-const targetLan = ref('简体中文')
+const props = defineProps(['sourceLanList', 'targetLanList'])
+
+const sourceLan = ref('en')
+const targetLan = ref('zh')
+
+function resetLan() {
+    sourceLan.value = 'en'
+    targetLan.value = 'zh'
+}
 </script>
 
 <style lang="scss" scoped>
