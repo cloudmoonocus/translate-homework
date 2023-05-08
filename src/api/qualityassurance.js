@@ -34,7 +34,7 @@ export function hunspell(text, language) {
 }
 
 // 拼写检查
-export function tmSearch(text, srcLang, tgtLang, similarity, caseSensitive) {
+export function tmSearch(text, srcLang, tgtLang, similarity = 0, caseSensitive = false) {
     const data = {
         'text': text,
         'srcLang': srcLang,

@@ -1,7 +1,7 @@
 <template>
     <div class="mt_main">
-        <HeaderMenu class="tool" :sourceLanList="sourceLanList" :targetLanList="targetLanList" @translate="translate"
-            @resetText="resetText">
+        <HeaderMenu class="tool" :sourceLanList="sourceLanList" :targetLanList="targetLanList" @handle="handle"
+            @resetText="resetText" mode="MT" text="Translate">
         </HeaderMenu>
         <div class="mt_main_textarea">
             <el-input class="mt_main_textarea_item" v-model="sourceDoc" :rows="15" type="textarea"
@@ -39,7 +39,7 @@ const sourceDoc = ref(null)
 const targetDoc = ref(null)
 
 // 翻译
-function translate(from, to) {
+function handle(from, to) {
     mt(sourceDoc.value, from, to).then((value) => {
         if (value.code !== 200) {
             message.error(value.msg)
