@@ -12,7 +12,6 @@ export function relation() {
         url: '/relation',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'GET',
         // data:data

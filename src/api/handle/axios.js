@@ -15,9 +15,18 @@ axiosRetry(requests, { retries: 2 })
 // 请求拦截器
 requests.interceptors.request.use(
     (config) => {
-        config.headers = { 'Content-Type': 'application/json' }
-        nprogress.start()
-        config.headers.Authorization = localStorage.getItem('Authorization')
+        config.headers['Content-Type'] = 'application/json'
+
+        // 如果需要禁用请求进度条，在接口使用时候设置 disableNprogress: true 即可
+        if (!config.headers.disableNprogress) {
+            nprogress.start()
+        }
+
+        // 同理，判断是否需要携带 token
+        if (!config.headers.noTakeToken) {
+            config.headers.Authorization = localStorage.getItem('Authorization')
+        }
+
         return config
     },
     (error) => {
@@ -29,8 +38,8 @@ requests.interceptors.request.use(
 requests.interceptors.response.use(
     (res) => {
         nprogress.done()
-        if (!res.data.success) {
-            handleNetworkError(res.data.errCode)
+        if (res.statusText !== 'OK') {
+            handleNetworkError(res.data.code)
         }
         return res.data
     },

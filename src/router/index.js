@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { ElLoading } from 'element-plus'
 import message from '../utils/message'
+import { useUserStore } from '../stores/user'
 
 const routes = [
     {
@@ -29,11 +30,77 @@ const routes = [
         },
     },
     {
-        path: '/userInfor',
-        component: () => import('../views/UserInfor.vue'),
+        path: '/tasks',
+        redirect: '/tasks/handle',
+    },
+    {
+        path: '/tasks',
+        component: () => import('../views/tasks/Index.vue'),
         meta: {
             requireAuth: true,
         },
+        children: [
+            {
+                path: 'handle',
+                component: () => import('../views/tasks/Handle.vue'),
+            },
+            {
+                path: 'mytask',
+                component: () => import('../views/tasks/MyTask.vue'),
+            },
+        ],
+    },
+    {
+        path: '/docs',
+        redirect: '/docs/create',
+    },
+    {
+        path: '/docs',
+        component: () => import('../views/docs/Index.vue'),
+        meta: {
+            requireAuth: true,
+        },
+        children: [
+            {
+                path: 'create',
+                component: () => import('../views/docs/Create.vue'),
+            },
+            {
+                path: 'list',
+                component: () => import('../views/docs/List.vue'),
+            },
+        ],
+    },
+    {
+        path: '/user',
+        redirect: '/user/infor',
+    },
+    {
+        path: '/user',
+        component: () => import('../views/user/Index.vue'),
+        meta: {
+            requireAuth: true,
+        },
+        children: [
+            {
+                path: 'infor',
+                component: () => import('../views/user/UserInfor.vue'),
+            },
+            {
+                path: 'manage',
+                component: () => import('../views/user/UserManage.vue'),
+                // beforeEnter: (to, from, next) => {
+                //     if (useUserStore().userInfor.role !== 'root') {
+                //         message.warning('您没有权限访问该页面')
+                //         next(from.path)
+                //     } else next()
+                // },
+            },
+        ],
+    },
+    {
+        path: '/tsl',
+        redirect: '/tsl/mt',
     },
     {
         path: '/tsl',

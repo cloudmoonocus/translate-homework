@@ -22,7 +22,7 @@
                 <el-button @click="resetForm">{{ $t('Reset') }}</el-button>
             </div>
         </div>
-        <el-dialog v-model="dialogVisible" width="20%" class="main_verify" :show-close="false" destroy-on-close>
+        <el-dialog v-model="dialogVisible" width="23%" class="main_verify" :show-close="false" destroy-on-close>
             <Verify @success="onVerifySuccess"></Verify>
         </el-dialog>
     </div>
@@ -72,8 +72,8 @@ function submitForm() {
                     userData.token = val.data.token
                     userData.id = val.data.id
                     userData.userName = signInData.name
-                    router.replace('/home')
-                    message.success(val.msg)
+                    signInData.isVerify = false
+                    location.href = '/home'
                 }
             })
         } else message.warning('请进行安全验证')

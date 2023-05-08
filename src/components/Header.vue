@@ -1,9 +1,13 @@
 <template>
     <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :ellipsis="false" :router="true" v-if="showKey">
+        <!-- logo -->
         <el-menu-item index="/home">G11N TranSpace</el-menu-item>
+        <!-- 占位 -->
         <div class="flex-grow" />
+        <!-- 首页 -->
         <el-menu-item index="/home">{{ $t("Index") }}</el-menu-item>
-        <el-sub-menu index="/tsl/mt">
+        <!-- 自助翻译 -->
+        <el-sub-menu index="/tsl">
             <template #title>
                 <el-icon>
                     <Promotion />
@@ -14,10 +18,61 @@
             <el-menu-item index="/tsl/sc">{{ $t('Spell check') }}</el-menu-item>
             <el-menu-item index="/tsl/ta">{{ $t('TL hints') }}</el-menu-item>
         </el-sub-menu>
+        <!-- 登录 -->
         <el-menu-item index="/signin" v-if="!userData.token">{{ $t('Login') }}</el-menu-item>
+        <!-- 注册 -->
         <el-menu-item index="/signup" v-if="!userData.token">{{ $t('Register') }}</el-menu-item>
-        <el-menu-item index="/userInfor" v-else>{{ userData.userName }}</el-menu-item>
+        <!-- 任务管理 -->
+        <el-sub-menu index="/tasks" v-if="!!userData.token">
+            <template #title>
+                <el-icon>
+                    <Grid />
+                </el-icon>
+                <span>{{ $t('Task management') }}</span>
+            </template>
+            <el-menu-item index="/tasks/handle">
+                {{ $t('Manage and create tasks') }}
+            </el-menu-item>
+            <el-menu-item index="/tasks/mytask">
+                {{ $t('My tasks') }}
+            </el-menu-item>
+        </el-sub-menu>
+        <!-- 文档翻译 -->
+        <el-sub-menu index="/docs" v-if="!!userData.token">
+            <template #title>
+                <el-icon>
+                    <Document />
+                </el-icon>
+                <span>{{ $t('Doc-translation') }}</span>
+            </template>
+            <el-menu-item index="/docs/create">
+                {{ $t('Create documents') }}
+            </el-menu-item>
+            <el-menu-item index="/docs/list">
+                {{ $t('Document list') }}
+            </el-menu-item>
+        </el-sub-menu>
+        <!-- 用户 -->
+        <el-sub-menu index="/user" v-if="!!userData.token">
+            <template #title>
+                <el-icon>
+                    <UserFilled />
+                </el-icon>
+                <span>{{ userData.userName }}</span>
+            </template>
+            <el-menu-item index="/user/infor">
+                {{ $t('Personal information') }}
+            </el-menu-item>
+            <el-menu-item index="/user/manage" v-if="userData.userInfor.role === 'root'">
+                {{ $t('user management') }}
+            </el-menu-item>
+            <el-menu-item index="" style="color: rgb(235, 73, 73);" @click="logOut">
+                {{ $t('Log out') }}
+            </el-menu-item>
+        </el-sub-menu>
+        <!-- 占位 -->
         <div class="flex-grow2" />
+        <!-- 语言 -->
         <el-sub-menu index="null">
             <template #title>
                 <img class="menu_image" src="../assets/icons/globe.gif" alt="language">
@@ -43,7 +98,9 @@
 import { nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '../stores/user';
+import { useUserStore } from '../stores/user'
+import { loginout } from '../api/user'
+import { inforReset } from '../utils/inforReset'
 
 const userData = useUserStore()
 const { locale } = useI18n()
@@ -69,6 +126,17 @@ watch(
 function changeLang(lang) {
     locale.value = lang
     localStorage.setItem('lang', lang)
+}
+
+// 退出
+function logOut() {
+    loginout({
+        'id': localStorage.getItem('id')
+    }).then((val) => {
+        if (val.code === 200) {
+            inforReset()
+        }
+    })
 }
 </script>
 

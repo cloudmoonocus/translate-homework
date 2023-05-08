@@ -5,7 +5,7 @@ export function login(data) {
     return request({
         url: '/login',
         headers: {
-            isToken: false,
+            noTakeToken: true,
         },
         method: 'post',
         data: JSON.stringify(data),
@@ -17,7 +17,7 @@ export function register(data) {
     return request({
         url: '/register',
         headers: {
-            isToken: false,
+            noTakeToken: true,
         },
         method: 'post',
         data: JSON.stringify(data),
@@ -28,55 +28,28 @@ export function register(data) {
 export function loginout(data) {
     return request({
         url: '/logout',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: JSON.stringify(data),
     })
 }
 
 // 获取信息
-export function getoInfo(data) {
-    // console.log(data);
-    // console.log(getToken())
-    // debugger
-    // let data_ = JSON.stringify({
-    //     "id": 1
-    // });
-    // return request({
-    //     url: '/getInfo',
-    //     headers: {
-    //         'Authorization': getToken(),
-    //         'Content-Type': 'application/json'
-    //     },
-    //     method: 'POST',
-    //     data: data_
-    // })
-    var axios = require('axios')
-    var data = JSON.stringify({
-        'id': data.id,
-    })
-
-    var config = {
-        method: 'post',
-        url: '/getInfo',
-        headers: {
-            'Authorization': getToken(),
-            'Content-Type': 'application/json',
-        },
-        data: JSON.stringify(data),
+export function getInfo(id) {
+    let data = {
+        id,
     }
-    return axios(config)
+
+    return request({
+        url: '/getInfo',
+        method: 'post',
+        data: JSON.stringify(data),
+    })
 }
 
 // 获取全部信息
 export function getAllInfo(cu) {
     return request({
         url: '/getAllInfo?currentPage=' + cu + '&pageSize=10',
-        headers: {
-            isToken: true,
-        },
         method: 'GET',
     })
 }
@@ -91,10 +64,6 @@ export function alterPassword(id, oldPassword, newPassword1, newPassword2) {
     }
     return request({
         url: '/alterPassword',
-        headers: {
-            isToken: true,
-            Authorization: getToken(),
-        },
         method: 'POST',
         data: data,
     })
@@ -112,41 +81,35 @@ export function changeInfo(id, username, role, oldPassword, newPassword, email) 
     }
     return request({
         url: '/changeinfo',
-        headers: {
-            isToken: true,
-        },
-        data: data,
+        data: JSON.stringify(data),
         method: 'POST',
     })
 }
 
-//管理端新增用户
-export function addUserAdmin(username, role, password, email) {
+// 管理端新增用户
+export function addUserAdmin(username, password, email, role) {
+    role = role ? 'root' : 'user'
     let data = {
         username: username,
-        role: role,
         password: password,
         email: email,
+        role: role,
     }
     return request({
         url: '/addUserAdmin',
-        headers: {
-            isToken: true,
-        },
-        data: data,
+        data: JSON.stringify(data),
         method: 'POST',
     })
 }
+
+// 删除用户
 export function deleteUserId(id) {
     let data = {
         'id': id,
     }
     return request({
         url: '/deleteUserById',
-        headers: {
-            isToken: true,
-        },
-        data: data,
+        data: JSON.stringify(data),
         method: 'POST',
     })
 }

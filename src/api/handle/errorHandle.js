@@ -1,6 +1,4 @@
-import { ElNotification } from 'element-plus'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { inforReset } from '../../utils/inforReset'
 
 export const handleNetworkError = (errStatus) => {
     let errMessage = '未知错误'
@@ -10,9 +8,8 @@ export const handleNetworkError = (errStatus) => {
                 errMessage = '错误的请求'
                 break
             case 401:
+                inforReset()
                 errMessage = '未授权，请登录'
-                localStorage.clear()
-                router.replace('/signin')
                 break
             case 403:
                 errMessage = '拒绝访问'

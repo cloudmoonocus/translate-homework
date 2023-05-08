@@ -28,8 +28,7 @@ export function deleteTask(taskId, presentUsername) {
     return request({
         url: '/deleteTask',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'post',
         data: data,
@@ -60,9 +59,6 @@ export function claimTask(userId, taskId, reviewer) {
     console.log(data)
     return request({
         url: '/claimTask',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: data,
     })
@@ -75,8 +71,7 @@ export function getTask(id) {
     return request({
         url: '/getTask',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'post',
         data: data,
@@ -91,7 +86,7 @@ export function getTask(id) {
 //     return request({
 //         url: '/deleteTask',
 //         headers: {
-//             isToken: false,
+//             noTakeToken: true,
 //             Authorization:getToken()
 //         },
 //         method: 'post',
@@ -107,8 +102,7 @@ export function submitTask(taskId, userId) {
     return request({
         url: '/submitTask',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'post',
         data: data,
@@ -124,8 +118,7 @@ export function updateTask(id, name, document) {
     return request({
         url: '/updateTask',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'post',
         data: data,
@@ -140,8 +133,7 @@ export function getTask1(userId, taskId) {
     return request({
         url: '/submitTask',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'post',
         data: data,
@@ -158,8 +150,7 @@ export function getRelation(cu) {
     return request({
         url: '/relation?currentPage=' + cu + '&pageSize=10',
         headers: {
-            isToken: false,
-            Authorization: getToken(),
+            noTakeToken: true,
         },
         method: 'GET',
     })

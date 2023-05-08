@@ -1,23 +1,18 @@
+
 <template>
     <div class="main">
         <el-menu :default-active="activeIndex" class="menu" :router="true">
-            <el-menu-item index="/tsl/mt">
+            <el-menu-item index="/tasks/handle">
                 <el-icon>
-                    <Monitor />
+                    <Setting />
                 </el-icon>
-                <span>{{ $t('MT') }}</span>
+                <span>{{ $t('Manage and create tasks') }}</span>
             </el-menu-item>
-            <el-menu-item index="/tsl/sc">
+            <el-menu-item index="/tasks/mytask">
                 <el-icon>
-                    <Checked />
+                    <Notebook />
                 </el-icon>
-                <span>{{ $t('Spell check') }}</span>
-            </el-menu-item>
-            <el-menu-item index="/tsl/ta">
-                <el-icon>
-                    <MagicStick />
-                </el-icon>
-                <span>{{ $t('TL hints') }}</span>
+                <span>{{ $t('My tasks') }}</span>
             </el-menu-item>
         </el-menu>
         <router-view v-slot="{ Component }">
@@ -31,8 +26,10 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
+import { useUserStore } from '../../stores/user'
 
 const router = useRouter()
+const userData = useUserStore()
 
 // 默认菜单
 const activeIndex = ref(router.currentRoute.value.path)

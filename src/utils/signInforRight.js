@@ -4,8 +4,8 @@ export function signInforRight(data) {
 
     return new Promise((resolve, reject) => {
         // 验证用户名
-        if (!name || name.length < 5 || name.length > 20) {
-            reject('用户名不能为空且长度在 5 和 20 之间')
+        if (!name || name.length < 4 || name.length > 20) {
+            reject('用户名不能为空且长度在 4 和 20 之间')
         }
 
         // 验证邮箱

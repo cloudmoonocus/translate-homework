@@ -35,11 +35,15 @@ const targetLanList = ref([{
     value: 'zh'
 }])
 
-const sourceDoc = ref(null)
-const targetDoc = ref(null)
+const sourceDoc = ref('')
+const targetDoc = ref('')
 
 // 翻译
 function handle(from, to) {
+    if (sourceDoc.value === '') {
+        message.warning('请输入需要翻译的内容')
+        return
+    }
     mt(sourceDoc.value, from, to).then((value) => {
         if (value.code !== 200) {
             message.error(value.msg)
@@ -63,13 +67,13 @@ function resetText() {
     flex-direction: column;
     align-items: center;
 
-    width: 100%;
+    width: calc(100vw - 250px);
 
     &_textarea {
         margin-top: 5vh;
         display: flex;
         justify-content: space-evenly;
-        width: 80%;
+        width: 90%;
 
         &_item {
             width: 500px;

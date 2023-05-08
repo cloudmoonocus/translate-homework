@@ -61,13 +61,13 @@ function resetText() {
     flex-direction: column;
     align-items: center;
 
-    width: 100%;
+    width: calc(100vw - 250px);
 
     &_textarea {
         margin-top: 5vh;
         display: flex;
         justify-content: space-evenly;
-        width: 80%;
+        width: 90%;
 
         &_item {
             width: 500px;

@@ -9,9 +9,6 @@ export function mt(text, from, to) {
     }
     return request({
         url: '/mt',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: JSON.stringify(data),
     })
@@ -25,9 +22,6 @@ export function hunspell(text, language) {
     }
     return request({
         url: '/hunspell',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: JSON.stringify(data),
     })
@@ -44,9 +38,6 @@ export function tmSearch(text, srcLang, tgtLang, similarity = 0, caseSensitive =
     }
     return request({
         url: '/tmSearch',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: JSON.stringify(data),
     })
@@ -61,7 +52,7 @@ export function check(text) {
     return request({
         url: '/check',
         headers: {
-            isToken: false,
+            noTakeToken: true,
         },
         method: 'post',
         data: JSON.stringify(data),

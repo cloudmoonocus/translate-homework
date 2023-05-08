@@ -12,9 +12,7 @@ export function createByUrl(config) {
     console.log(getToken())
     return request({
         url: '/createByUrl',
-        headers: {
-            isToken: true,
-        },
+
         method: 'post',
         data: data,
     })
@@ -32,7 +30,6 @@ export function createByText(name, sourceLang, targetLang, text) {
         url: '/createByText',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'post',
         data: data,
@@ -64,7 +61,6 @@ export function getDocument(id) {
         url: '/getDocument',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'POST',
         data: data,
@@ -86,7 +82,6 @@ export function updateDocument(id, name, sourceLang, targetLang, wordSum, transl
         url: '/updateDocument',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'POST',
         data: data,
@@ -101,7 +96,6 @@ export function updateAllDocument(documentId, contentList) {
         url: '/updateAllContent',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'POST',
         data: data,
@@ -120,7 +114,6 @@ export function updateContent(documentId, sentenceId, sourceText, targetText) {
         url: '/updateContent',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'POST',
         data: data,
@@ -138,7 +131,6 @@ export function searchContent(id, lang, sourceText, targetText) {
         url: '/searchContent',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'POST',
         data: data,
@@ -156,7 +148,6 @@ export function documentSearch(item) {
         url: '/documentSearch',
         headers: {
             isToken: true,
-            Authorization: getToken(),
         },
         method: 'GET',
         data: data,

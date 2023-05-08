@@ -5,6 +5,15 @@ export const useUserStore = defineStore('user', () => {
     const userName = ref(localStorage.getItem('userName'))
     const id = ref(localStorage.getItem('id'))
     const token = ref(localStorage.getItem('Authorization'))
+    const userInfor = ref({
+        'id': '',
+        'username': '加载中...',
+        'email': '加载中...',
+        'contribution': 0,
+        'role': 'user',
+        'task': [],
+        'record': {},
+    })
 
-    return { userName, id, token }
+    return { userName, id, token, userInfor }
 })

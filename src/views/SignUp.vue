@@ -28,7 +28,7 @@
                 <el-button @click="resetForm">{{ $t('Reset') }}</el-button>
             </div>
         </div>
-        <el-dialog v-model="dialogVisible" width="20%" class="main_verify" :show-close="false" destroy-on-close>
+        <el-dialog v-model="dialogVisible" width="23%" class="main_verify" :show-close="false" destroy-on-close>
             <Verify @success="onVerifySuccess"></Verify>
         </el-dialog>
     </div>
@@ -71,7 +71,10 @@ function submitForm() {
             register(registerData).then(() => {
                 if (val.code !== 200) {
                     message.error(val.msg)
-                } else message.success('注册成功')
+                } else {
+                    signUpData.isVerify = false
+                    message.success('注册成功')
+                }
             })
         } else message.warning('请进行安全验证')
     }, (error) => {
