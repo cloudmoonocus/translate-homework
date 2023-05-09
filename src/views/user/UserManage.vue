@@ -1,15 +1,21 @@
 <template>
     <div class="userManage">
         <!-- 表格 -->
-        <el-table :data="userData" class="userManage_table" stripe table-layout="auto">
+        <el-table :data="filterTableData" class="userManage_table" stripe table-layout="auto">
             <el-table-column align="center" prop="id" label="ID" />
             <el-table-column align="center" prop="username" :label="$t('Username')" />
             <el-table-column align="center" prop="email" :label="$t('UserEmail')" />
-            <el-table-column align="center" prop="role" :label="$t('Role')" />
+            <el-table-column align="center" prop="role" :label="$t('Role')">
+                <template #default="scope">
+                    <el-tag :type="scope.row.role === 'user' ? 'primary' : 'danger'" disable-transitions>
+                        {{ scope.row.role === 'user' ? $t('User') : $t('Root') }}
+                    </el-tag>
+                </template>
+            </el-table-column>
             <el-table-column align="center" width="350">
                 <template #header>
                     <div style="display: flex; justify-content:space-evenly;align-items: center;">
-                        <el-input v-model="search" :placeholder="$t('Search user')" style="width: 60%;" />
+                        <el-input v-model="search" :placeholder="$t('Search user')" style="width: 60%;" clearable />
                         <el-button type="primary" @click="newUser">{{ $t('New User')
                         }}</el-button>
                     </div>
@@ -29,15 +35,16 @@
             </el-table-column>
         </el-table>
         <!-- 分页器 -->
-        <el-pagination style="margin: 15px 0;" background layout="prev, pager, next" :total="total"
-            v-model:current-page="currentPage" />
+        <el-pagination style="margin: 15px 0;" background layout="sizes, prev, pager, next" v-model:page-size="pageSize"
+            v-model:current-page="currentPage" :page-sizes="[10, 30, 50, 100]" :total="total" />
         <!-- 弹窗 -->
-        <InforDiglog v-model:dialogVisible="dialogVisible" :isNew="isNew" @update="update"></InforDiglog>
+        <InforDiglog v-model:dialogVisible="dialogVisible" :isNew="isNew" @update="update" :editData="editData">
+        </InforDiglog>
     </div>
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { getAllInfo } from '../../api/user';
 import { deleteUserId } from '../../api/user';
 import message from '../../utils/message';
@@ -48,21 +55,37 @@ const search = ref('');
 
 // 换页
 const currentPage = ref(1)
+const pageSize = ref(10)
 const total = ref(10)
 const userData = ref([])
+const userDataAll = ref([])
 function update() {
-    getAllInfo(currentPage.value).then((value) => {
+    // 分页信息
+    getAllInfo(currentPage.value, pageSize.value).then((value) => {
         total.value = value.total
         userData.value = value.data
     })
+    // 获取全部信息
+    getAllInfo(currentPage.value).then((value) => {
+        userDataAll.value = value.data
+    })
 }
-watchEffect(update);
+watchEffect(update)
+const filterTableData = computed(() => {
+    if (search.value) {
+        return userDataAll.value.filter((data) => data.username.includes(search.value))
+    } else {
+        return userData.value
+    }
+})
 
 // 操作用户
 const isNew = ref(false)
+const editData = ref(null)
 const dialogVisible = ref(false)
 function handleEdit(row) {
     isNew.value = false
+    editData.value = row
     dialogVisible.value = true
 }
 

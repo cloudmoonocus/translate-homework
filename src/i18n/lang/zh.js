@@ -117,4 +117,6 @@ export default {
     'Contribution': '贡献数',
     'Modify information': '修改信息',
     'Are you sure to delete this user?': '确定删除该用户吗？',
+    'User': '普通用户',
+    'Root': '管理员',
 }

@@ -116,4 +116,6 @@ export default {
     'Contribution': 'Contribution',
     'Modify information': 'Modify information',
     'Are you sure to delete this user?': 'Are you sure to delete this user?',
+    'User': 'User',
+    'Root': 'Root',
 }

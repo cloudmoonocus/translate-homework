@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="dialogVisible" width="20%" class="diglog">
+    <el-dialog v-model="dialogVisible" width="25%" style="border-radius: 15px;" @open="editShow">
         <el-form :model="infor" label-position="top" label-width="75px">
             <el-form-item :label="$t('Username') + ':'">
                 <el-input v-model="infor.name" />
@@ -16,26 +16,24 @@
             <el-form-item :label="$t('Root') + ':'">
                 <el-switch v-model="infor.role" />
             </el-form-item>
-        </el-form>
-        <template #footer>
-            <span>
+            <div style="text-align: right;">
                 <el-button @click="dialogVisible = false">{{ $t('Cancel') }}</el-button>
                 <el-button type="primary" @click="handle">
                     {{ $t('Confirm') }}
                 </el-button>
-            </span>
-        </template>
+            </div>
+        </el-form>
     </el-dialog>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue';
-import { addUserAdmin } from '../../api/user';
+import { addUserAdmin, changeInfo } from '../../api/user';
 import { signInforRight } from '../../utils/signInforRight';
 import message from '../../utils/message';
 
 // 显示与隐藏
-const props = defineProps(['dialogVisible', 'isNew'])
+const props = defineProps(['dialogVisible', 'isNew', 'editData'])
 const emit = defineEmits(['update:dialogVisible', 'update'])
 const dialogVisible = computed({
     get() {
@@ -48,6 +46,7 @@ const dialogVisible = computed({
 
 // 信息
 const infor = ref({
+    id: '',
     name: '',
     email: '',
     password: '',
@@ -86,8 +85,35 @@ function handle() {
             message.error(error)
         })
     } else {
-        clearInfor()
-        dialogVisible.value = false
+        const changeData = {
+            id: infor.value.id,
+            email: infor.value.email,
+            username: infor.value.name,
+            role: infor.value.role ? 'root' : 'user',
+        }
+        if ((infor.value.password && infor.value.repeatPassword) && (infor.value.password === infor.value.repeatPassword)) {
+            changeData.newPassword = infor.value.repeatPassword
+        }
+        changeInfo(changeData).then((value) => {
+            if (value.code === 200) {
+                emit('update')
+                clearInfor()
+                dialogVisible.value = false
+                message.success('更新成功')
+            } else {
+                message.error(value.msg)
+            }
+        })
+    }
+}
+
+function editShow() {
+    // 如果是修改则传入数据
+    if (!props.isNew) {
+        infor.value.id = props.editData.id
+        infor.value.name = props.editData.username
+        infor.value.email = props.editData.email
+        infor.value.role = props.editData.role === 'root'
     }
 }
 </script>

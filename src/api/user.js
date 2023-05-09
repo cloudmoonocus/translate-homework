@@ -47,9 +47,9 @@ export function getInfo(id) {
 }
 
 // 获取全部信息
-export function getAllInfo(cu) {
+export function getAllInfo(cu, size = 9999999999) {
     return request({
-        url: '/getAllInfo?currentPage=' + cu + '&pageSize=10',
+        url: '/getAllInfo?currentPage=' + cu + '&pageSize=' + size,
         method: 'GET',
     })
 }
@@ -70,15 +70,7 @@ export function alterPassword(id, oldPassword, newPassword1, newPassword2) {
 }
 
 //修改用户信息
-export function changeInfo(id, username, role, oldPassword, newPassword, email) {
-    let data = {
-        id: id,
-        username: username,
-        role: role,
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-        email: email,
-    }
+export function changeInfo(data) {
     return request({
         url: '/changeinfo',
         data: JSON.stringify(data),
