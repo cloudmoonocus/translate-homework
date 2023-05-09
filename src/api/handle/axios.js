@@ -44,7 +44,9 @@ requests.interceptors.response.use(
         return res.data
     },
     (error) => {
-        handleNetworkError(error.response.status)
+        if (error.message.includes('exceeded')) {
+            handleNetworkError(502)
+        } else handleNetworkError(error.response.status)
         return Promise.reject(new Error(`请求失败:${error}`))
     }
 )
