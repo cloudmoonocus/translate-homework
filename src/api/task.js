@@ -70,9 +70,6 @@ export function getTask(id) {
     }
     return request({
         url: '/getTask',
-        headers: {
-            noTakeToken: true,
-        },
         method: 'post',
         data: data,
     })

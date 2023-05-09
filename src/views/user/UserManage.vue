@@ -36,7 +36,7 @@
         </el-table>
         <!-- 分页器 -->
         <el-pagination style="margin: 15px 0;" background layout="sizes, prev, pager, next" v-model:page-size="pageSize"
-            v-model:current-page="currentPage" :page-sizes="[10, 30, 50, 100]" :total="total" />
+            v-model:current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :total="total" />
         <!-- 弹窗 -->
         <InforDiglog v-model:dialogVisible="dialogVisible" :isNew="isNew" @update="update" :editData="editData">
         </InforDiglog>
@@ -44,10 +44,10 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, computed } from 'vue';
-import { getAllInfo } from '../../api/user';
-import { deleteUserId } from '../../api/user';
-import message from '../../utils/message';
+import { ref, watchEffect, computed } from 'vue'
+import { getAllInfo } from '../../api/user'
+import { deleteUserId } from '../../api/user'
+import message from '../../utils/message'
 import InforDiglog from '../../components/user/InforDiglog.vue'
 
 // 搜索
@@ -112,10 +112,10 @@ function newUser() {
     flex-direction: column;
     align-items: center;
     width: calc(100vw - 250px);
+    padding: 15px 0;
 
     &_table {
-        margin-top: 20px;
-        width: 97%;
+        width: 100%;
 
         :deep(.el-table__row) {
             height: 65px;

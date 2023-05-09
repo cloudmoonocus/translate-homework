@@ -29,14 +29,13 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-import Verify from '../components/Verify.vue';
-import { login } from '../api/user';
-import { signInforRight } from '../utils/signInforRight';
-import message from '../utils/message';
-import { useUserStore } from '../stores/user';
-import router from '../router';
+import Verify from '../components/Verify.vue'
+import { login } from '../api/user'
+import { signInforRight } from '../utils/signInforRight'
+import message from '../utils/message'
+import { useUserStore } from '../stores/user'
 
 const userData = useUserStore()
 // 登录信息

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { ElLoading } from 'element-plus'
 import message from '../utils/message'
 import { useUserStore } from '../stores/user'
 
@@ -89,12 +88,12 @@ const routes = [
             {
                 path: 'manage',
                 component: () => import('../views/user/UserManage.vue'),
-                // beforeEnter: (to, from, next) => {
-                //     if (useUserStore().userInfor.role !== 'root') {
-                //         message.warning('您没有权限访问该页面')
-                //         next(from.path)
-                //     } else next()
-                // },
+                beforeEnter: (to, from, next) => {
+                    if (useUserStore().userInfor.role !== 'root') {
+                        message.warning('您没有权限访问该页面')
+                        next(from.path)
+                    } else next()
+                },
             },
         ],
     },
@@ -153,6 +152,7 @@ let loadingInstance = null
 router.beforeEach((to, from, next) => {
     loadingInstance = ElLoading.service({
         fullscreen: true,
+        lock: true,
         text: '加载中... 请稍后',
     })
     // 通过 meta 字段匹配最高级路径判断是否登录，因此只需在最高级路径添加字段即可

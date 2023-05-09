@@ -44,7 +44,6 @@ watch(
 .main {
     display: flex;
     min-height: calc(100vh - 70px);
-    background-color: #eef1f9;
 }
 
 .menu {

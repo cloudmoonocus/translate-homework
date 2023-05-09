@@ -35,12 +35,12 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref } from 'vue'
 import { User, Lock, Message } from '@element-plus/icons-vue'
-import Verify from '../components/Verify.vue';
+import Verify from '../components/Verify.vue'
 import { register } from '../api/user'
-import { signInforRight } from '../utils/signInforRight';
-import message from '../utils/message';
+import { signInforRight } from '../utils/signInforRight'
+import message from '../utils/message'
 
 // 注册信息
 const signUpData = reactive({

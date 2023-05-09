@@ -15,8 +15,8 @@
 <script setup>
 import HeaderMenu from '../../components/translate/HeaderMenu.vue'
 import { ref } from 'vue'
-import { mt } from '../../api/qualityassurance';
-import message from '../../utils/message';
+import { mt } from '../../api/qualityassurance'
+import message from '../../utils/message'
 
 // 源语言列表
 const sourceLanList = ref([{

@@ -27,10 +27,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { addUserAdmin, changeInfo } from '../../api/user';
-import { signInforRight } from '../../utils/signInforRight';
-import message from '../../utils/message';
+import { computed, ref } from 'vue'
+import { addUserAdmin, changeInfo } from '../../api/user'
+import { signInforRight } from '../../utils/signInforRight'
+import message from '../../utils/message'
 
 // 显示与隐藏
 const props = defineProps(['dialogVisible', 'isNew', 'editData'])
