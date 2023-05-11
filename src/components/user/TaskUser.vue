@@ -2,7 +2,7 @@
     <div class="uMain_right">
         <el-descriptions :title="$t('Recent tasks')" :column="3" border class="uMain_right_tasks"
             v-if="userData.userInfor.task.length">
-            <div v-for="val in userData.userInfor.task">
+            <div v-for="val in userData.userInfor.task" :key="val.name">
                 <el-descriptions-item align="center" :label="$t('TaskName')">
                     {{ val.name }}
                 </el-descriptions-item>

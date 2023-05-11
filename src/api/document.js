@@ -1,18 +1,9 @@
 import request from './handle/axios'
 
 // 解析Url创建文档
-export function createByUrl(config) {
-    const data = {
-        'name': config.name,
-        'sourceLang': config.sourceLang,
-        'targetLang': config.targetLang,
-        'url': config.url,
-    }
-    console.log(data)
-    console.log(getToken())
+export function createByUrl(data) {
     return request({
         url: '/createByUrl',
-
         method: 'post',
         data: data,
     })
@@ -28,26 +19,15 @@ export function createByText(name, sourceLang, targetLang, text) {
     }
     return request({
         url: '/createByText',
-        headers: {
-            isToken: true,
-        },
         method: 'post',
         data: data,
     })
 }
 
 // 获取文档列表
-export function getAllDocument(cu) {
-    // let data={
-    // 		currentPage:cu,
-    // 		pageSize:10
-    // }
+export function getAllDocument(cu, pagesize = 999999) {
     return request({
-        url: '/getAllDocument?currentPage=' + cu + '&pageSize=10',
-        headers: {
-            isToken: true,
-            // Authorization:getToken()
-        },
+        url: '/getAllDocument?currentPage=' + cu + '&pageSize=' + pagesize,
         method: 'GET',
     })
 }

@@ -35,17 +35,10 @@ export function deleteTask(taskId, presentUsername) {
     })
 }
 
-export function getAllTask(cp) {
-    let data = {
-        // currentPage:1,
-        // pageSize:5
-    }
+// 获取所有任务
+export function getAllTask(cp, pageSize = 999999) {
     return request({
-        url: '/getAllTask?currentPage=' + cp + '&pageSize=10',
-        headers: {
-            isToken: true,
-            // Authorization:getToken()
-        },
+        url: '/getAllTask?currentPage=' + cp + '&pageSize=' + pageSize,
         method: 'GET',
     })
 }

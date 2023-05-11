@@ -7,7 +7,7 @@
                 </el-icon>
                 <span>{{ $t('Create documents') }}</span>
             </el-menu-item>
-            <el-menu-item index="/docs/list">
+            <el-menu-item index="/docs/list" v-if="userData.userInfor.role === 'root'">
                 <el-icon>
                     <Collection />
                 </el-icon>

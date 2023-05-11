@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <el-menu :default-active="activeIndex" class="menu" :router="true">
-            <el-menu-item index="/tasks/handle">
+            <el-menu-item index="/tasks/handle" v-if="userData.userInfor.role === 'root'">
                 <el-icon>
                     <Setting />
                 </el-icon>

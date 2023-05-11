@@ -30,7 +30,7 @@
                 </el-icon>
                 <span>{{ $t('Task management') }}</span>
             </template>
-            <el-menu-item index="/tasks/handle">
+            <el-menu-item index="/tasks/handle" v-if="userData.userInfor.role === 'root'">
                 {{ $t('Manage and create tasks') }}
             </el-menu-item>
             <el-menu-item index="/tasks/mytask">
@@ -45,7 +45,7 @@
                 </el-icon>
                 <span>{{ $t('Doc-translation') }}</span>
             </template>
-            <el-menu-item index="/docs/create">
+            <el-menu-item index="/docs/create" v-if="userData.userInfor.role === 'root'">
                 {{ $t('Create documents') }}
             </el-menu-item>
             <el-menu-item index="/docs/list">

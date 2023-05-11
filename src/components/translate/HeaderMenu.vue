@@ -2,19 +2,19 @@
     <div class="hm_main">
         <div class="hm_main_select" v-if="props.mode === 'MT' || props.mode === 'TA'">
             <el-select v-model="sourceLan" placeholder="源语言">
-                <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" />
+                <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" :key="val.value" />
             </el-select>
             <el-icon>
                 <Switch />
             </el-icon>
             <el-select v-model="targetLan" placeholder="目标语言">
-                <el-option :label="val.label" :value="val.value" v-for="val in props.targetLanList" />
+                <el-option :label="val.label" :value="val.value" v-for="val in props.targetLanList" :key="val.value" />
             </el-select>
         </div>
         <div class="hm_main_select" v-else-if="props.mode === 'SC'">
             <div>请选择校对的语言：</div>
             <el-select v-model="sourceLan" placeholder="源语言">
-                <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" />
+                <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" :key="val.value" />
             </el-select>
             <div style="flex: 0.5;"></div>
         </div>
