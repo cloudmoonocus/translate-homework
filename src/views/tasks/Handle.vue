@@ -100,10 +100,9 @@
 
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
-import { getAllTask } from '../../api/task'
 import { useUserStore } from '../../stores/user'
 import message from '../../utils/message'
-import { createTask, claimTask } from '../../api/task'
+import { getAllTask, createTask, claimTask } from '../../api/task'
 
 const userData = useUserStore()
 

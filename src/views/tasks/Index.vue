@@ -12,7 +12,7 @@
                 <el-icon>
                     <Notebook />
                 </el-icon>
-                <span>{{ $t('My tasks') }}</span>
+                <span>{{ $t('Task relation') }}</span>
             </el-menu-item>
         </el-menu>
         <router-view v-slot="{ Component }">

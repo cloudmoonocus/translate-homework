@@ -34,7 +34,7 @@
                 {{ $t('Manage and create tasks') }}
             </el-menu-item>
             <el-menu-item index="/tasks/mytask">
-                {{ $t('My tasks') }}
+                {{ $t('Task relation') }}
             </el-menu-item>
         </el-sub-menu>
         <!-- 文档翻译 -->
