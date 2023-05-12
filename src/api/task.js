@@ -1,25 +1,21 @@
 import request from './handle/axios'
 
-// 登录方法
+// 新建任务
 export function createTask(name, description, creator, document) {
-    const data = JSON.stringify({
+    const data = {
         'name': name,
         'description': description,
         'creator': creator,
         'document': document,
-    })
-    console.log(data, getToken())
+    }
     return request({
         url: '/createTask',
-        headers: {
-            isToken: true,
-            // Authorization:getToken()
-        },
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
+// 删除任务
 export function deleteTask(taskId, presentUsername) {
     const data = {
         'taskId': taskId,
@@ -43,17 +39,17 @@ export function getAllTask(cp, pageSize = 999999) {
     })
 }
 
-export function claimTask(userId, taskId, reviewer) {
+// 认领任务
+export function claimTask(userId, taskId, claimWay) {
     const data = {
-        'userId': userId,
-        'taskId': taskId,
-        'claimWay': reviewer,
+        userId,
+        taskId,
+        claimWay,
     }
-    console.log(data)
     return request({
         url: '/claimTask',
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 

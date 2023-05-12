@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
-import path from 'path'
+import { resolve, dirname } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -20,12 +20,13 @@ export default defineConfig({
             resolvers: [ElementPlusResolver()],
         }),
         vueI18n({
-            include: path.resolve(__dirname, './path/to/src/i18n/**'),
+            include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/i18n/**'),
         }),
     ],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),
+            'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
         },
     },
     server: {

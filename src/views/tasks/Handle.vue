@@ -38,15 +38,17 @@
             <el-table-column fixed="right" align="center" width="250">
                 <template #header>
                     <div style="display: flex; justify-content:space-evenly;align-items: center;">
-                        <el-input v-model="search" :placeholder="$t('Search task')" style="width: 55%;" clearable />
-                        <el-button type="primary" @click="newTask">{{ $t('A new task')
+                        <el-input v-model="search" :placeholder="$t('Search task')"
+                            :style="userData.userInfor.role === 'root' ? { width: '55%' } : { width: '85%' }" clearable />
+                        <el-button type="primary" @click="dialogVisible = true" v-if="userData.userInfor.role === 'root'">{{
+                            $t('A new task')
                         }}</el-button>
                     </div>
                 </template>
                 <template #default="scope">
                     <el-popconfirm :title="$t('Confirm to claim the translation task?')" :confirm-button-text="$t('Yes')"
                         :cancel-button-text="$t('No')" confirm-button-type="danger" cancel-button-type="primary"
-                        @confirm="deletetask(scope.row)">
+                        @confirm="onClaimTask(scope.row.id, 'translator')">
                         <template #reference>
                             <el-button :type="scope.row.translator ? 'info' : 'primary'" plain
                                 :disabled="!!scope.row.translator">
@@ -56,7 +58,7 @@
                     </el-popconfirm>
                     <el-popconfirm :title="$t('Confirm to claim the review task?')" :confirm-button-text="$t('Yes')"
                         :cancel-button-text="$t('No')" confirm-button-type="danger" cancel-button-type="primary"
-                        @confirm="deletetask(scope.row)">
+                        @confirm="onClaimTask(scope.row.id, 'reviewer')">
                         <template #reference>
                             <el-button :type="scope.row.reviewer ? 'info' : 'primary'" plain
                                 :disabled="!!scope.row.reviewer">
@@ -70,14 +72,40 @@
         <!-- 分页器 -->
         <el-pagination style="margin: 15px 0;" background layout="sizes, prev, pager, next" v-model:page-size="pageSize"
             v-model:current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :total="total" />
-        <!-- 弹窗 -->
+        <!-- 弹窗：新建任务 -->
+        <el-dialog v-model="dialogVisible" :title="$t('A new task')" width="30%" style="border-radius: 15px;">
+            <el-form :model="newTaskData" label-position="top" label-width="75px">
+                <el-form-item :label="$t('TaskName') + ':'">
+                    <el-input v-model="newTaskData.name" />
+                </el-form-item>
+                <el-form-item :label="$t('Description') + ':'">
+                    <el-input v-model="newTaskData.description" />
+                </el-form-item>
+                <el-form-item :label="$t('Creator') + ':'">
+                    <el-input v-model="newTaskData.creator" />
+                </el-form-item>
+                <el-form-item :label="$t('Doc Id') + ':'">
+                    <el-input v-model="newTaskData.document" />
+                </el-form-item>
+            </el-form>
+            <div style="text-align: right;">
+                <el-button @click="dialogVisible = false">{{ $t('Cancel') }}</el-button>
+                <el-button type="primary" @click="newTask">
+                    {{ $t('Confirm') }}
+                </el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
 import { getAllTask } from '../../api/task'
+import { useUserStore } from '../../stores/user'
 import message from '../../utils/message'
+import { createTask, claimTask } from '../../api/task'
+
+const userData = useUserStore()
 
 // 搜索
 const search = ref('');
@@ -109,8 +137,43 @@ const filterTableData = computed(() => {
 })
 
 // 创建新任务
+const dialogVisible = ref(false)
+const newTaskData = ref({
+    name: '',
+    description: '',
+    creator: userData.userInfor.username,
+    document: '',
+})
 function newTask() {
+    let _name = newTaskData.value.name
+    if (_name === '') _name = Date.now()
+    for (const key in newTaskData.value) {
+        if (Object.hasOwnProperty.call(newTaskData.value, key)) {
+            if (newTaskData.value[key] === '') {
+                message.warning('请填写完整信息')
+                return
+            }
+        }
+    }
+    createTask(_name, newTaskData.value.description, newTaskData.value.creator, newTaskData.value.document).then((value) => {
+        if (value.code === 200) {
+            message.success('创建成功')
+            dialogVisible.value = false
+            update()
+        }
+    })
+}
 
+// 认领任务
+function onClaimTask(taskId, way) {
+    claimTask(userData.userInfor.id, taskId, way).then((value) => {
+        if (value.code === 200) {
+            message.success('认领成功')
+            update()
+        } else {
+            message.warning(value.msg)
+        }
+    })
 }
 </script>
 

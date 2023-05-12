@@ -5,7 +5,7 @@
             <div class="main_ctx_intro">{{ $t('G11N') }}</div>
             <div class="main_ctx_form">
                 <el-form :model="signInData" label-width="auto">
-                    <el-form-item :label="$t('Username')" required>
+                    <el-form-item :label="$t('UserName')" required>
                         <el-input v-model="signInData.name" :suffix-icon="User" />
                     </el-form-item>
                     <el-form-item :label="$t('Password')" required>
