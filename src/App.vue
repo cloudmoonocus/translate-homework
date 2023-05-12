@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <router-view></router-view>
-  <!-- TODO footer -->
+  <!-- HACK Footer底部组件显示 -->
   <!-- <Footer></Footer> -->
 </template>
 

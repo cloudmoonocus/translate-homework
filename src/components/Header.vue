@@ -30,10 +30,10 @@
                 </el-icon>
                 <span>{{ $t('Task management') }}</span>
             </template>
-            <el-menu-item index="/tasks/handle" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/tasks/handle">
                 {{ $t('Manage and create tasks') }}
             </el-menu-item>
-            <el-menu-item index="/tasks/mytask">
+            <el-menu-item index="/tasks/mytask" v-if="userData.userInfor.role === 'root'">
                 {{ $t('Task relation') }}
             </el-menu-item>
         </el-sub-menu>

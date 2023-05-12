@@ -1,13 +1,13 @@
 <template>
     <div class="main">
         <el-menu :default-active="activeIndex" class="menu" :router="true">
-            <el-menu-item index="/docs/create">
+            <el-menu-item index="/docs/create" v-if="userData.userInfor.role === 'root'">
                 <el-icon>
                     <DocumentAdd />
                 </el-icon>
                 <span>{{ $t('Create documents') }}</span>
             </el-menu-item>
-            <el-menu-item index="/docs/list" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/docs/list">
                 <el-icon>
                     <Collection />
                 </el-icon>

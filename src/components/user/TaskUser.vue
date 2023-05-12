@@ -1,6 +1,6 @@
 <template>
     <div class="uMain_right">
-        <el-descriptions :title="$t('Recent tasks')" :column="3" border class="uMain_right_tasks"
+        <el-descriptions :title="$t('Recent tasks')" :column="4" border class="uMain_right_tasks"
             v-if="userData.userInfor.task.length">
             <div v-for="val in userData.userInfor.task" :key="val.name">
                 <el-descriptions-item align="center" :label="$t('TaskName')">
@@ -10,9 +10,12 @@
                     <el-tag>{{ val.relation }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('State')">
-                    <el-tag :type="val.status === 'ed' ? '' : 'danger'">
+                    <el-tag :type="val.status === 'ed' ? 'success' : 'danger'">
                         {{ val.status }}
                     </el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" :label="$t('Operation')">
+                    <el-button type="primary" plain>{{ $t('Check') }}</el-button>
                 </el-descriptions-item>
             </div>
         </el-descriptions>

@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import message from '../utils/message'
 import { useUserStore } from '../stores/user'
 
+// BUG 在管理员界面刷新就显示没有权限
+// 请求存入 Pinia 数据比进入路由晚
 const routes = [
     {
         path: '/',
@@ -46,6 +48,12 @@ const routes = [
             {
                 path: 'mytask',
                 component: () => import('../views/tasks/MyTask.vue'),
+                beforeEnter: (to, from, next) => {
+                    if (useUserStore().userInfor.role !== 'root') {
+                        message.warning('您没有权限访问该页面')
+                        next(from.path)
+                    } else next()
+                },
             },
         ],
     },
@@ -63,6 +71,12 @@ const routes = [
             {
                 path: 'create',
                 component: () => import('../views/docs/Create.vue'),
+                beforeEnter: (to, from, next) => {
+                    if (useUserStore().userInfor.role !== 'root') {
+                        message.warning('您没有权限访问该页面')
+                        next(from.path)
+                    } else next()
+                },
             },
             {
                 path: 'list',
