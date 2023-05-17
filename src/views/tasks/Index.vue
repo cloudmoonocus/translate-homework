@@ -8,18 +8,14 @@
                 </el-icon>
                 <span>{{ $t('Manage and create tasks') }}</span>
             </el-menu-item>
-            <el-menu-item index="/tasks/mytask" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/tasks/taskRelation" v-if="userData.userInfor.role === 'root'">
                 <el-icon>
                     <Notebook />
                 </el-icon>
                 <span>{{ $t('Task relation') }}</span>
             </el-menu-item>
         </el-menu>
-        <router-view v-slot="{ Component }">
-            <keep-alive>
-                <component :is="Component" />
-            </keep-alive>
-        </router-view>
+        <router-view></router-view>
     </div>
 </template>
 

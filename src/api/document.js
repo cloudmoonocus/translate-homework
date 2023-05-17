@@ -5,7 +5,7 @@ export function createByUrl(data) {
     return request({
         url: '/createByUrl',
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
@@ -20,7 +20,19 @@ export function createByText(name, sourceLang, targetLang, text) {
     return request({
         url: '/createByText',
         method: 'post',
-        data: data,
+        data: JSON.stringify(data),
+    })
+}
+
+// 删除文档
+export function deleteDocumentById(id) {
+    const data = {
+        id,
+    }
+    return request({
+        url: '/deleteDocumentById',
+        method: 'POST',
+        data: JSON.stringify(data),
     })
 }
 
@@ -35,101 +47,74 @@ export function getAllDocument(cu, pagesize = 999999) {
 // 获取文档
 export function getDocument(id) {
     let data = {
-        'id': id,
+        id,
     }
     return request({
         url: '/getDocument',
-        headers: {
-            isToken: true,
-        },
         method: 'POST',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
-// 更新文档
-export function updateDocument(id, name, sourceLang, targetLang, wordSum, translationSum, reviewSum) {
-    let data = {
-        'id': id,
-        'name': name,
-        'sourceLang': sourceLang,
-        'targetLang': targetLang,
-        'wordSum': wordSum,
-        'translationSum': translationSum,
-        'reviewSum': reviewSum,
-    }
+// 修改文档
+export function updateDocument(data) {
     return request({
         url: '/updateDocument',
-        headers: {
-            isToken: true,
-        },
         method: 'POST',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
-export function updateAllDocument(documentId, contentList) {
+
+// 更新文档语句
+export function updateAllContent(documentId, contentList) {
     let data = {
-        'documentId': documentId,
-        'contentList': contentList,
+        documentId,
+        contentList,
     }
     return request({
         url: '/updateAllContent',
-        headers: {
-            isToken: true,
-        },
         method: 'POST',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
 // 修改语句
 export function updateContent(documentId, sentenceId, sourceText, targetText) {
     let data = {
-        'documentId': documentId,
-        'sentenceId': sentenceId,
-        'sourceText': sourceText,
-        'targetText': targetText,
+        documentId,
+        sentenceId,
+        sourceText,
+        targetText,
     }
     return request({
         url: '/updateContent',
-        headers: {
-            isToken: true,
-        },
         method: 'POST',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
 export function searchContent(id, lang, sourceText, targetText) {
     let data = {
-        'documentId': documentId,
-        'sentenceId': sentenceId,
-        'sourceText': sourceText,
-        'targetText': targetText,
+        documentId,
+        sentenceId,
+        sourceText,
+        targetText,
     }
     return request({
         url: '/searchContent',
-        headers: {
-            isToken: true,
-        },
         method: 'POST',
-        data: data,
+        data: JSON.stringify(data),
     })
 }
 
 export function documentSearch(item) {
-    console.log('请求具体部分')
-    console.log(item)
     let data = {
-        'id': item.id,
-        'name': item.name,
+        id: item.id,
+        name: item.name,
     }
     return request({
         url: '/documentSearch',
-        headers: {
-            isToken: true,
-        },
         method: 'GET',
-        data: data,
+        data: JSON.stringify(data),
     })
 }

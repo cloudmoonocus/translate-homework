@@ -1,6 +1,6 @@
 <template>
     <div class="mt_main">
-        <HeaderMenu class="tool" :sourceLanList="sourceLanList" :targetLanList="targetLanList" @handle="handle"
+        <HeaderMenu class="tool" :sourceLanList="sourceLang" :targetLanList="targetLang" @handle="handle"
             @resetText="resetText" mode="MT" text="Translate">
         </HeaderMenu>
         <div class="mt_main_textarea">
@@ -17,23 +17,7 @@ import HeaderMenu from '../../components/translate/HeaderMenu.vue'
 import { ref } from 'vue'
 import { mt } from '../../api/qualityassurance'
 import message from '../../utils/message'
-
-// 源语言列表
-const sourceLanList = ref([{
-    label: '简体中文',
-    value: 'zh'
-}, {
-    label: 'English',
-    value: 'en'
-}])
-// 目标语言列表
-const targetLanList = ref([{
-    label: 'English',
-    value: 'en'
-}, {
-    label: '简体中文',
-    value: 'zh'
-}])
+import { sourceLang, targetLang } from '../../assets/infor/languageList'
 
 const sourceDoc = ref('')
 const targetDoc = ref('')

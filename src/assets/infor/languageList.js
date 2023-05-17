@@ -1,3 +1,25 @@
+export const sourceLang = [
+    {
+        label: '简体中文',
+        value: 'zh',
+    },
+    {
+        label: 'English',
+        value: 'en',
+    },
+]
+
+export const targetLang = [
+    {
+        label: 'English',
+        value: 'en',
+    },
+    {
+        label: '简体中文',
+        value: 'zh',
+    },
+]
+
 export const languageList = [
     {
         value: 'af_ZA',

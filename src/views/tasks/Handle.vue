@@ -167,7 +167,7 @@ function newTask() {
 function onClaimTask(taskId, way) {
     claimTask(userData.userInfor.id, taskId, way).then((value) => {
         if (value.code === 200) {
-            message.success('认领成功')
+            message.success('认领成功：请前往个人中心查看文档')
             update()
         } else {
             message.warning(value.msg)

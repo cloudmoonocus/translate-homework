@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-model="dialogVisible" width="25%" style="border-radius: 15px;" @open="editShow">
         <el-form :model="infor" label-position="top" label-width="75px">
-            <el-form-item :label="$t('Username') + ':'">
+            <el-form-item :label="$t('UserName') + ':'">
                 <el-input v-model="infor.name" />
             </el-form-item>
             <el-form-item :label="$t('UserEmail') + ':'">
@@ -40,6 +40,7 @@ const dialogVisible = computed({
         return props.dialogVisible
     },
     set(value) {
+        clearInfor()
         emit('update:dialogVisible', value)
     }
 })

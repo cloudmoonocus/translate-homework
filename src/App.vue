@@ -1,6 +1,6 @@
 <template>
-  <Header></Header>
-  <router-view></router-view>
+  <Header v-show="!$route.meta.isHideHeader"></Header>
+  <router-view :key="$route.fullPath"></router-view>
   <!-- HACK Footer底部组件显示 -->
   <!-- <Footer></Footer> -->
 </template>

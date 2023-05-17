@@ -1,6 +1,6 @@
 <template>
     <div class="ta_main">
-        <HeaderMenu class="tool" mode="TA" text="Confirm" :sourceLanList="sourceLanList" :targetLanList="targetLanList"
+        <HeaderMenu class="tool" mode="TA" text="Confirm" :sourceLanList="sourceLang" :targetLanList="targetLang"
             @handle="handle" @resetText="resetText"></HeaderMenu>
         <div class="ta_main_textarea">
             <el-input class="ta_main_textarea_item" v-model="sourceDoc" :rows="15" type="textarea"
@@ -23,26 +23,10 @@ import HeaderMenu from '../../components/translate/HeaderMenu.vue'
 import { tmSearch } from '../../api/qualityassurance'
 import { ref } from 'vue'
 import message from '../../utils/message'
+import { sourceLang, targetLang } from '../../assets/infor/languageList'
 
 const sourceDoc = ref('')
 const resDoc = ref([])
-
-// 源语言列表
-const sourceLanList = ref([{
-    label: '简体中文',
-    value: 'zh'
-}, {
-    label: 'English',
-    value: 'en'
-}])
-// 目标语言列表
-const targetLanList = ref([{
-    label: 'English',
-    value: 'en'
-}, {
-    label: '简体中文',
-    value: 'zh'
-}])
 
 // 建议
 function handle(from, to) {

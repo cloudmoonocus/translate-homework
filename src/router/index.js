@@ -46,8 +46,8 @@ const routes = [
                 component: () => import('../views/tasks/Handle.vue'),
             },
             {
-                path: 'mytask',
-                component: () => import('../views/tasks/MyTask.vue'),
+                path: 'taskRelation',
+                component: () => import('../views/tasks/TaskRelation.vue'),
                 beforeEnter: (to, from, next) => {
                     if (useUserStore().userInfor.role !== 'root') {
                         message.warning('您没有权限访问该页面')
@@ -83,6 +83,13 @@ const routes = [
                 component: () => import('../views/docs/List.vue'),
             },
         ],
+    },
+    {
+        path: '/docDetail/:id',
+        component: () => import('../views/docs/Detail.vue'),
+        meta: {
+            isHideHeader: true,
+        },
     },
     {
         path: '/user',

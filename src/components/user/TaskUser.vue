@@ -15,7 +15,8 @@
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Operation')">
-                    <el-button type="primary" plain>{{ $t('Check') }}</el-button>
+                    <el-button type="primary" plain @click="checkDoc(val.data.document, val.taskId)">{{ $t('Check')
+                    }}</el-button>
                 </el-descriptions-item>
             </div>
         </el-descriptions>
@@ -24,18 +25,19 @@
 </template>
 
 <script setup>
+import router from '../../router';
 import { useUserStore } from '../../stores/user'
-// import { getTask } from '../../api/task'
+import { getTask } from '../../api/task'
 
 const userData = useUserStore()
 
 // 最近任务
 // 为任务添加信息
-// userData.userInfor.task.forEach((task) => {
-//     getTask(task.taskId).then((val) => {
-//         task.data = val.data
-//     })
-// })
+userData.userInfor.task.forEach((task) => {
+    getTask(task.taskId).then((val) => {
+        task.data = val.data
+    })
+})
 
 
 // TODO 记录
@@ -43,6 +45,16 @@ const userData = useUserStore()
 /**
  * en-US: {translationSum: 0, reviewSum: 0}
  */
+
+// 查看文档
+function checkDoc(docID, taskID) {
+    userData.currentTaskID = taskID
+    router.push({
+        path: '/docDetail/' + docID
+    }).then(null, () => {
+        userData.currentTaskID = 0
+    })
+}
 </script>
 
 <style lang="scss" scoped>

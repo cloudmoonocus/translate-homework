@@ -3,11 +3,11 @@
         <!-- 表格 -->
         <el-table :data="filterTableData" class="userManage_table" stripe table-layout="auto">
             <el-table-column align="center" prop="id" label="ID" />
-            <el-table-column align="center" prop="username" :label="$t('Username')" />
+            <el-table-column align="center" prop="username" :label="$t('UserName')" />
             <el-table-column align="center" prop="email" :label="$t('UserEmail')" />
             <el-table-column align="center" prop="role" :label="$t('Role')">
                 <template #default="scope">
-                    <el-tag :type="scope.row.role === 'user' ? 'primary' : 'danger'" disable-transitions>
+                    <el-tag :type="scope.row.role === 'user' ? '' : 'danger'" disable-transitions>
                         {{ scope.row.role === 'user' ? $t('User') : $t('Root') }}
                     </el-tag>
                 </template>

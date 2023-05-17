@@ -2,7 +2,7 @@
     <div class="userManage">
         <!-- 搜索 -->
         <div class="userManage_head">
-            <h3>文档列表</h3>
+            <h3>{{ $t('Document list') }}</h3>
             <el-input v-model="search" :placeholder="$t('Search document')" class="userManage_head_input" size="large">
                 <template #prefix>
                     <el-icon>
@@ -16,7 +16,17 @@
             <template #header>
                 <div style="display: flex; justify-content: space-between;">
                     <span style="font-weight: bold;">{{ docs.name }}</span>
-                    <el-button type="primary">{{ $t('Check') }}</el-button>
+                    <div v-if="userData.userInfor.role === 'root'">
+                        <el-button type="info" plain @click="checkDocContent(docs.id)">
+                            {{ $t('Check') }}
+                        </el-button>
+                        <el-button type="primary" plain @click="editDoc(docs)">
+                            {{ $t('Modify document properties') }}
+                        </el-button>
+                        <el-button type="danger" plain @click="deleteDoc(docs.id)">
+                            {{ $t('Delete') }}
+                        </el-button>
+                    </div>
                 </div>
             </template>
             <div class="userManage_card_dec">
@@ -31,13 +41,50 @@
         <!-- 分页器 -->
         <el-pagination style="margin: 15px 0;" background layout="sizes, prev, pager, next" v-model:page-size="pageSize"
             v-model:current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :total="total" />
+        <!-- 弹窗：编辑文档属性 -->
+        <el-dialog v-model="dialogVisible" :title="$t('Modify document properties')" width="25%"
+            style="border-radius: 15px;">
+            <el-form :model="newDocData" label-position="top" label-width="75px">
+                <el-form-item :label="$t('Document title') + ':'">
+                    <el-input v-model="newDocData.name" />
+                </el-form-item>
+                <el-form-item :label="$t('Original language') + ':'">
+                    <el-select v-model="newDocData.sourceLang">
+                        <el-option :label="val.label" :value="val.value" v-for="val in sourceLang" :key="val.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('Target language') + ':'">
+                    <el-select v-model="newDocData.targetLang">
+                        <el-option :label="val.label" :value="val.value" v-for="val in targetLang" :key="val.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('Translation') + ':'">
+                    <el-input-number v-model="newDocData.translationSum" />
+                </el-form-item>
+                <el-form-item :label="$t('Review') + ':'">
+                    <el-input-number v-model="newDocData.reviewSum" />
+                </el-form-item>
+            </el-form>
+            <div style="text-align: right;">
+                <el-button @click="dialogVisible = false">{{ $t('Cancel') }}</el-button>
+                <el-button type="primary" @click="changeDoc">
+                    {{ $t('Confirm') }}
+                </el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
-import { getAllDocument } from '../../api/document'
+import { deleteDocumentById, getAllDocument, updateDocument } from '../../api/document'
+import router from '../../router'
+import { useUserStore } from '../../stores/user'
 import message from '../../utils/message'
+import deepcopy from 'deepcopy'
+import { sourceLang, targetLang } from '../../assets/infor/languageList'
+
+const userData = useUserStore()
 
 // 搜索
 const search = ref('');
@@ -67,6 +114,49 @@ const filterTableData = computed(() => {
         return docsData.value
     }
 })
+
+// 查看文档
+function checkDocContent(id) {
+    router.push({
+        path: '/docDetail/' + id,
+    })
+}
+
+// 编辑文档基本属性
+const dialogVisible = ref(false)
+const newDocData = ref([])
+function editDoc(docData) {
+    dialogVisible.value = true
+    newDocData.value = deepcopy(docData)
+    delete newDocData.value.docUrl
+    delete newDocData.value.url
+}
+function changeDoc() {
+    if (!newDocData.value.name) {
+        newDocData.value.name = Date.now()
+    }
+    updateDocument(newDocData.value).then((val) => {
+        if (val.code === 200) {
+            update()
+            dialogVisible.value = false
+            message.success('修改成功！')
+        } else {
+            message.danger(val.msg)
+        }
+    })
+}
+
+// 删除文档
+function deleteDoc(id) {
+    deleteDocumentById(id).then((value) => {
+        if (value.code === 200) {
+            message.success('删除成功')
+            update()
+        } else {
+            message.error('删除失败')
+        }
+    })
+}
 </script>
 
 <style lang="scss" scoped>

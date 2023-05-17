@@ -14,6 +14,7 @@ export const useUserStore = defineStore('user', () => {
         'task': [],
         'record': {},
     })
+    const currentTaskID = ref(0)
 
-    return { userName, id, token, userInfor }
+    return { userName, id, token, userInfor, currentTaskID }
 })

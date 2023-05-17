@@ -7,13 +7,13 @@
                     <el-option :label="$t('Create documents from URL')" value="url" />
                 </el-select>
                 <el-select v-model="sourceLan" placeholder="源语言" style="width: 100px;">
-                    <el-option :label="val.label" :value="val.value" v-for="val in sourceLanList" :key="val.value" />
+                    <el-option :label="val.label" :value="val.value" v-for="val in sourceLang" :key="val.value" />
                 </el-select>
                 <el-icon>
                     <Switch />
                 </el-icon>
                 <el-select v-model="targetLan" placeholder="目标语言" style="width: 100px;">
-                    <el-option :label="val.label" :value="val.value" v-for="val in targetLanList" :key="val.value" />
+                    <el-option :label="val.label" :value="val.value" v-for="val in targetLang" :key="val.value" />
                 </el-select>
             </div>
             <div class="cMain_head_right">
@@ -64,6 +64,8 @@
 import { ref } from 'vue'
 import { createByText, createByUrl } from '../../api/document'
 import message from '../../utils/message'
+import router from '../../router';
+import { sourceLang, targetLang } from '../../assets/infor/languageList'
 
 // 创建方式
 const createWay = ref('text')
@@ -84,22 +86,6 @@ const urlData = ref({
 const sourceLan = ref('zh')
 // 目标语言
 const targetLan = ref('en')
-// 源语言列表
-const sourceLanList = ref([{
-    label: '简体中文',
-    value: 'zh'
-}, {
-    label: 'English',
-    value: 'en'
-}])
-// 目标语言列表
-const targetLanList = ref([{
-    label: 'English',
-    value: 'en'
-}, {
-    label: '简体中文',
-    value: 'zh'
-}])
 
 // 文档名称
 const docName = ref('')
@@ -122,8 +108,11 @@ function createDocByText() {
     createByText(name, sourceLan.value, targetLan.value, text.value).then((value) => {
         if (value.code === 200) {
             reset()
-            message.success('创建成功' + value.data)
-        }
+            message.success('创建成功')
+            router.push('/docs/list').then(() => {
+                location.reload()
+            })
+        } else message.warning(value.msg)
     })
 }
 function createDocByUrl() {
@@ -146,8 +135,11 @@ function createDocByUrl() {
     createByUrl(data).then((value) => {
         if (value.code === 200) {
             reset()
+            router.push({
+                path: '/docs/list'
+            })
             message.success('创建成功')
-        }
+        } else message.warning(value.msg)
     })
 }
 

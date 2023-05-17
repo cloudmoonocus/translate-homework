@@ -33,7 +33,7 @@
             <el-menu-item index="/tasks/handle">
                 {{ $t('Manage and create tasks') }}
             </el-menu-item>
-            <el-menu-item index="/tasks/mytask" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/tasks/taskRelation" v-if="userData.userInfor.role === 'root'">
                 {{ $t('Task relation') }}
             </el-menu-item>
         </el-sub-menu>
@@ -75,7 +75,7 @@
         <!-- 语言 -->
         <el-sub-menu index="null">
             <template #title>
-                <img class="menu_image" src="../assets/icons/globe.gif" alt="language">
+                <img class="menu_image" src="../assets/images/globe.svg" alt="language">
                 <span>{{ $t('Language') }}</span>
             </template>
             <el-menu-item @click="changeLang('zh')">
