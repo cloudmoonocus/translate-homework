@@ -46,14 +46,10 @@ export function tmSearch(text, srcLang, tgtLang, similarity = 0, caseSensitive =
 // 语法检查
 export function check(text) {
     const data = {
-        'text': text,
+        text,
     }
-    console.log(data)
     return request({
         url: '/check',
-        headers: {
-            noTakeToken: true,
-        },
         method: 'post',
         data: JSON.stringify(data),
     })

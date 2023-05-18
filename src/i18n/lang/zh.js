@@ -6,6 +6,7 @@ export default {
     'Self-translation': '自助快译',
     'MT': '机器翻译',
     'Spell check': '拼写检查',
+    'Grammar check': '语法检查',
     'TL hints': '翻译建议',
     'Task management': '任务管理',
     'Manage and create tasks': '任务列表',
@@ -40,6 +41,7 @@ export default {
     'Reset text': '重置文本',
     'Reset language': '重置语言',
     'Please enter the text to be translated here': '请在此输入待翻译文本',
+    'Please enter the text to be checked here': '请在此输入待检查文本',
     'The target language text will be displayed here': '目标语言文本将在此展示',
     'Enter the text to be checked here': '请在此输入待检查文本',
     'Enter the text that you want to provide a suggestion for. The suggested text is mainly a single word':
@@ -81,6 +83,7 @@ export default {
     'Confirm': '确认',
     'Yes': '确认',
     'Cancel': '取消',
+    'Inquire': '查询',
     'No': '取消',
     'Correct': '正确',
     'Batch delete': '批量删除',
@@ -139,6 +142,7 @@ export default {
     'Create documents from text': '根据文本创建文档',
     'Create documents from URL': '根据 URL 创建文档',
     'Check': '查看',
+    'Checking': '检查',
     'Word': '词数',
     'Translation': '翻译积分',
     'Review': '审核积分',
@@ -151,4 +155,5 @@ export default {
     'Save this sentence': '保存该句',
     'Edit task': '编辑任务',
     'Modify document properties': '修改文档属性',
+    'Contribution record': '贡献记录',
 }

@@ -29,7 +29,7 @@ export function deleteTask(taskId, presentUsername) {
 }
 
 // 获取所有任务
-export function getAllTask(cp, pageSize = 999999) {
+export function getAllTask(cp, pageSize = 999) {
     return request({
         url: '/getAllTask?currentPage=' + cp + '&pageSize=' + pageSize,
         method: 'GET',
@@ -37,7 +37,7 @@ export function getAllTask(cp, pageSize = 999999) {
 }
 
 // 获取用户和任务的对应关系
-export function getRelation(cu, pageSize = 999999) {
+export function getRelation(cu, pageSize = 999) {
     return request({
         url: '/relation?currentPage=' + cu + '&pageSize=' + pageSize,
         method: 'GET',

@@ -1,8 +1,7 @@
 <template>
   <Header v-show="!$route.meta.isHideHeader"></Header>
   <router-view :key="$route.fullPath"></router-view>
-  <!-- HACK Footer底部组件显示 -->
-  <!-- <Footer></Footer> -->
+  <Footer v-if="$route.path === '/home'"></Footer>
 </template>
 
 <script setup>

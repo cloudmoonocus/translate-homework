@@ -1,5 +1,24 @@
 <template>
     <div class="uMain_right">
+        <!-- 贡献记录 -->
+        <el-descriptions :title="$t('Contribution record')" :column="3" border class="uMain_right_record"
+            v-if="Object.keys(userData.userInfor.record).length">
+            <div v-for="(val, key) in userData.userInfor.record" :key="val.name">
+                <el-descriptions-item align="center" :label="$t('Language')">
+                    {{ key }}
+                </el-descriptions-item>
+                <el-descriptions-item align="center" :label="$t('Translation')">
+                    <el-tag type="success">{{ val.reviewSum }}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" :label="$t('Review')">
+                    <el-tag type="success">
+                        {{ val.translationSum }}
+                    </el-tag>
+                </el-descriptions-item>
+            </div>
+        </el-descriptions>
+        <el-empty description="暂无贡献" class="uMain_right_recordEmpty" v-else />
+        <!-- 最近任务 -->
         <el-descriptions :title="$t('Recent tasks')" :column="4" border class="uMain_right_tasks"
             v-if="userData.userInfor.task.length">
             <div v-for="val in userData.userInfor.task" :key="val.name">
@@ -15,12 +34,13 @@
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Operation')">
-                    <el-button type="primary" plain @click="checkDoc(val.data.document, val.taskId)">{{ $t('Check')
-                    }}</el-button>
+                    <el-button type="primary" plain :disabled="val.status === 'ed' || val.status === 'wait'"
+                        @click="checkDoc(val.data.document, val.taskId)">{{ $t('Check')
+                        }}</el-button>
                 </el-descriptions-item>
             </div>
         </el-descriptions>
-        <el-empty description="暂无任务" class="uMain_right_tasks" v-else />
+        <el-empty description="暂无任务" class="uMain_right_tasksEmpty" v-else />
     </div>
 </template>
 
@@ -33,18 +53,15 @@ const userData = useUserStore()
 
 // 最近任务
 // 为任务添加信息
+const requestArray = []
 userData.userInfor.task.forEach((task) => {
-    getTask(task.taskId).then((val) => {
-        task.data = val.data
+    requestArray.push(getTask(task.taskId))
+})
+Promise.all(requestArray).then((val) => {
+    userData.userInfor.task.forEach((task, index) => {
+        task.data = val[index].data
     })
 })
-
-
-// TODO 记录
-// console.log(userData.userInfor.record)
-/**
- * en-US: {translationSum: 0, reviewSum: 0}
- */
 
 // 查看文档
 function checkDoc(docID, taskID) {
@@ -66,9 +83,24 @@ function checkDoc(docID, taskID) {
     width: 70%;
     height: 100%;
 
+    &_record {
+        margin-top: 10vh;
+        width: 88%;
+    }
+
+    &_recordEmpty {
+        margin-top: 5vh;
+        width: 88%;
+    }
+
     &_tasks {
-        margin-top: 15vh;
-        width: 85%;
+        margin-top: 8vh;
+        width: 88%;
+    }
+
+    &_tasksEmpty {
+        margin-top: 5vh;
+        width: 88%;
     }
 }
 

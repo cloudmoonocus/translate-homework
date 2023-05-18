@@ -38,7 +38,6 @@ export function getInfo(id) {
     let data = {
         id,
     }
-
     return request({
         url: '/getInfo',
         method: 'post',
@@ -46,8 +45,8 @@ export function getInfo(id) {
     })
 }
 
-// 获取全部信息
-export function getAllInfo(cu, size = 9999999999) {
+// 获取全部信用户息
+export function getAllInfo(cu, size = 999) {
     return request({
         url: '/getAllInfo?currentPage=' + cu + '&pageSize=' + size,
         method: 'GET',

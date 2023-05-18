@@ -2,8 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import message from '../utils/message'
 import { useUserStore } from '../stores/user'
 
-// BUG 在管理员界面刷新就显示没有权限
-// 请求存入 Pinia 数据比进入路由晚
 const routes = [
     {
         path: '/',
@@ -132,6 +130,10 @@ const routes = [
             {
                 path: 'mt',
                 component: () => import('../views/translate/MT.vue'),
+            },
+            {
+                path: 'vc',
+                component: () => import('../views/translate/VC.vue'),
             },
             {
                 path: 'sc',

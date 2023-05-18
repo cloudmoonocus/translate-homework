@@ -1,16 +1,18 @@
 <template>
     <div class="sc_main">
-        <HeaderMenu class="tool" mode="SC" text="Check" :sourceLanList="languageList" @handle="handle"
+        <HeaderMenu class="tool" mode="SC" text="Checking" :sourceLanList="languageList" @handle="handle"
             @resetText="resetText"></HeaderMenu>
         <div class="sc_main_textarea">
             <el-input class="sc_main_textarea_item" v-model="sourceDoc" type="textarea"
-                :placeholder="$t('Please enter the text to be translated here')" />
+                :placeholder="$t('Please enter the text to be checked here')" />
             <div class="sc_main_textarea_item sc_main_textarea_res">
                 <el-card style="margin-bottom: 10px;" shadow="hover" v-for="val in resDoc" v-if="resDoc.length">
                     <template #header>
                         <span>{{ val.name }}</span>
                     </template>
-                    <el-tag style="margin-right: 5px;" v-for="sug in val.suggestion">{{ sug }}</el-tag>
+                    <el-tag v-if="val.suggestion === 'No suggestions'">{{ val.suggestion }}</el-tag>
+                    <el-tag v-else style="margin-right: 10px; margin-bottom: 10px;" v-for="sug in val.suggestion">{{ sug
+                    }}</el-tag>
                 </el-card>
                 <h3 v-else style="text-align: center;margin-top: 15vh;">无任何语法错误</h3>
             </div>

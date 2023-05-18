@@ -9,7 +9,7 @@
                     <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/save.svg" alt="save">
                     <div style="font-size: 14px;">{{ $t('Save Submit') }}</div>
                 </div>
-                <div class="menuIcon">
+                <div class="menuIcon" @click="translateAll">
                     <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/translate.svg"
                         alt="translate">
                     <div style="font-size: 14px;">{{ $t('MT') }}</div>
@@ -31,7 +31,38 @@
             </el-input>
         </el-header>
         <el-container class="main_ctx">
-            <el-aside width="400px" class="main_ctx_aside">Aside</el-aside>
+            <el-aside width="400px" class="main_ctx_aside">
+                <div class="main_ctx_aside_mt">
+                    <el-input v-model="mtData" :placeholder="$t('Please enter the text to be translated here')" size="large"
+                        clearable>
+                        <template #append>
+                            <el-button :icon="Search" @click="asideMT" />
+                        </template>
+                    </el-input>
+                    <el-input style="margin-top: 10px;" v-model="mtResultData" type="textarea"
+                        :autosize="{ minRows: 5, maxRows: 15 }" />
+                </div>
+                <el-divider />
+                <div class="main_ctx_aside_sc">
+                    <el-input v-model="scData" :placeholder="$t('Please enter the text to be checked here')" size="large"
+                        clearable>
+                        <template #append>
+                            <el-button :icon="Search" @click="asideSC" />
+                        </template>
+                    </el-input>
+                    <el-card style="margin-top: 5px; margin-bottom: 15px;" shadow="hover" v-for="val in scResultData">
+                        <template #header>
+                            <span style="color: #ff0000;">{{ val.error }}</span>
+                        </template>
+                        <div style="display: flex;align-items: center;flex-wrap: wrap;gap: 10px;">
+                            <el-tag v-for="replace in val.replacements">{{ replace }}</el-tag>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            {{ val.suggestion }}
+                        </div>
+                    </el-card>
+                </div>
+            </el-aside>
             <el-main class="main_ctx_content">
                 <el-card class="card" shadow="hover" v-for="(ct, index) in docData.contentList">
                     <template #header>
@@ -61,6 +92,7 @@ import deepCopy from 'deepcopy'
 import { submitTask } from '../../api/task'
 import { useUserStore } from '../../stores/user'
 import router from '../../router'
+import { check } from '../../api/qualityassurance'
 
 const userData = useUserStore()
 const route = useRoute()
@@ -144,6 +176,24 @@ onBeforeUnmount(() => {
     clearInterval(timer)
 })
 
+// 翻译整个文档
+function translateAll() {
+    let promiseAsync = []
+    docData.value.contentList.forEach((val) => {
+        let text = val.sourceText
+        if (text === '') text = 'null'
+        promiseAsync.push(mt(text, docData.value.sourceLang, docData.value.targetLang))
+    })
+    Promise.all(promiseAsync).then((value) => {
+        docData.value.contentList.forEach((val, index) => {
+            console.log();
+            if (value[index].code !== 200) {
+                val.targetText = '翻译失败'
+            } else val.targetText = value[index].data.translatedText
+        })
+    })
+}
+
 // 提交任务
 function submit() {
     submitTask(userData.userInfor.id, userData.currentTaskID).then((value) => {
@@ -152,6 +202,43 @@ function submit() {
         } else {
             message.success('提交成功')
             router.replace('/user/infor')
+        }
+    })
+}
+
+// 左侧机器翻译
+const mtData = ref('')
+const mtResultData = ref('')
+function asideMT() {
+    if (mtData.value === '') {
+        message.warning('请输入需要翻译的内容')
+        return
+    }
+
+    mt(mtData.value, docData.value.sourceLang, docData.value.targetLang).then((value) => {
+        if (value.code !== 200) {
+            message.error(value.msg)
+        } else {
+            mtResultData.value = value.data.translatedText
+            message.success('翻译完成')
+        }
+    })
+}
+
+// 左侧语法检查
+const scData = ref('')
+const scResultData = ref('')
+function asideSC() {
+    if (scData.value === '') {
+        message.warning('请输入需要检查的内容')
+        return
+    }
+    check(scData.value).then((value) => {
+        if (value.code !== 200) {
+            message.error(value.msg)
+        } else {
+            scResultData.value = value.data
+            message.success('检查完成')
         }
     })
 }
@@ -178,8 +265,20 @@ function submit() {
         height: calc(100% - 100px);
 
         &_aside {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             border-right: 1px #d2d2d2 solid;
             height: 100%;
+
+            &_mt {
+                margin-top: 40px;
+                width: 90%;
+            }
+
+            &_sc {
+                width: 90%;
+            }
         }
 
         &_content {

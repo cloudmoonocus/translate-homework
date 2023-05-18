@@ -7,7 +7,7 @@
         <!-- 首页 -->
         <el-menu-item index="/home">{{ $t("Index") }}</el-menu-item>
         <!-- 自助翻译 -->
-        <el-sub-menu index="/tsl">
+        <el-sub-menu index="/tsl" v-if="!!userData.token">
             <template #title>
                 <el-icon>
                     <Promotion />
@@ -15,6 +15,7 @@
                 <span>{{ $t("Self-translation") }}</span>
             </template>
             <el-menu-item index="/tsl/mt">{{ $t('MT') }}</el-menu-item>
+            <el-menu-item index="/tsl/vc">{{ $t('Grammar check') }}</el-menu-item>
             <el-menu-item index="/tsl/sc">{{ $t('Spell check') }}</el-menu-item>
             <el-menu-item index="/tsl/ta">{{ $t('TL hints') }}</el-menu-item>
         </el-sub-menu>

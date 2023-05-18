@@ -7,6 +7,12 @@
                 </el-icon>
                 <span>{{ $t('MT') }}</span>
             </el-menu-item>
+            <el-menu-item index="/tsl/vc">
+                <el-icon>
+                    <SuccessFilled />
+                </el-icon>
+                <span>{{ $t('Grammar check') }}</span>
+            </el-menu-item>
             <el-menu-item index="/tsl/sc">
                 <el-icon>
                     <Checked />

@@ -1,6 +1,6 @@
 <template>
     <div class="ta_main">
-        <HeaderMenu class="tool" mode="TA" text="Confirm" :sourceLanList="sourceLang" :targetLanList="targetLang"
+        <HeaderMenu class="tool" mode="TA" text="Inquire" :sourceLanList="sourceLang" :targetLanList="targetLang"
             @handle="handle" @resetText="resetText"></HeaderMenu>
         <div class="ta_main_textarea">
             <el-input class="ta_main_textarea_item" v-model="sourceDoc" :rows="15" type="textarea"
@@ -12,7 +12,7 @@
                     </template>
                     <span>{{ val.targetText }}</span>
                 </el-card>
-                <h3 v-else style="text-align: center;line-height: 30vh;">无任何翻译建议</h3>
+                <h3 v-else style="text-align: center;margin-top: 15vh;">无任何翻译建议</h3>
             </div>
         </div>
     </div>
