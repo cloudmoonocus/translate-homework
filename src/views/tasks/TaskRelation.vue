@@ -20,7 +20,7 @@
                     <el-input v-model="search" :placeholder="$t('Search task')" clearable />
                 </template>
                 <template #default="scope">
-                    <el-button type="info" plain @click="checkDocContent()">
+                    <el-button type="info" plain @click="checkDocContent(scope.row.documentId)">
                         {{ $t('Document') }}
                     </el-button>
                     <el-button type="primary" plain @click="editTask(scope.row)">
@@ -94,14 +94,12 @@ const filterTableData = computed(() => {
     }
 })
 
-// HACK 进入文档查看
 function checkDocContent(id) {
     router.push({
         path: '/docDetail/' + id,
     })
 }
 
-// HACK 编辑任务
 const dialogVisible = ref(false)
 const newTaskData = ref({
     taskId: '',
@@ -112,7 +110,7 @@ function editTask(data) {
     dialogVisible.value = true
     newTaskData.value.taskId = data.taskId
     newTaskData.value.name = data.taskName
-    newTaskData.value.document = data.id
+    newTaskData.value.document = data.documentId
 }
 function changeTask() {
     for (const key in newTaskData.value) {

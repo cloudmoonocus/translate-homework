@@ -155,4 +155,7 @@ export default {
     'Edit task': 'Edit task information',
     'Modify document properties': 'Modify',
     'Contribution record': 'Contribution record',
+    'Update doc from Gitee': 'Update doc from Gitee',
+    'Upload doc to Gitee': 'Upload doc to Gitee',
+    'Commit message': 'Commit message',
 }

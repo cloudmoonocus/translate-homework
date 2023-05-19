@@ -156,4 +156,7 @@ export default {
     'Edit task': '编辑任务',
     'Modify document properties': '修改文档属性',
     'Contribution record': '贡献记录',
+    'Update doc from Gitee': '从 Gitee 更新文档',
+    'Upload doc to Gitee': '上传文档至 Gitee',
+    'Commit message': '提交信息',
 }

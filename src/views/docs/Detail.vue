@@ -18,9 +18,19 @@
                     <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/check.svg" alt="check">
                     <div style="font-size: 14px;">{{ $t('Proofread') }}</div>
                 </div>
+                <el-divider direction="vertical" />
                 <div class="menuIcon" @click="submit" v-if="userData.currentTaskID">
                     <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/submit.svg" alt="submit">
                     <div style="font-size: 14px;">{{ $t('Submit') }}</div>
+                </div>
+                <el-divider direction="vertical" v-if="userData.currentTaskID" />
+                <div class="menuIcon" @click="onPull" style="width: 120px;">
+                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/pull.svg" alt="submit">
+                    <div style="font-size: 14px;">{{ $t('Update doc from Gitee') }}</div>
+                </div>
+                <div class="menuIcon" @click="onPush" style="width: 120px;">
+                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/gitee.svg" alt="submit">
+                    <div style="font-size: 14px;">{{ $t('Upload doc to Gitee') }}</div>
                 </div>
             </div>
             <el-input class="menuSearch" v-model="search" :prefix-icon="Search" :placeholder="$t('Doc Search')" clearable
@@ -39,7 +49,8 @@
                             <el-button :icon="Search" @click="asideMT" />
                         </template>
                     </el-input>
-                    <el-input style="margin-top: 10px;" v-model="mtResultData" type="textarea"
+                    <el-empty v-if="!mtResultData" :description="$t('None')" />
+                    <el-input v-else style="margin-top: 10px;" v-model="mtResultData" type="textarea"
                         :autosize="{ minRows: 5, maxRows: 15 }" />
                 </div>
                 <el-divider />
@@ -50,6 +61,7 @@
                             <el-button :icon="Search" @click="asideSC" />
                         </template>
                     </el-input>
+                    <el-empty :description="$t('None')" />
                     <el-card style="margin-top: 5px; margin-bottom: 15px;" shadow="hover" v-for="val in scResultData">
                         <template #header>
                             <span style="color: #ff0000;">{{ val.error }}</span>
@@ -79,13 +91,34 @@
             </el-main>
         </el-container>
     </el-container>
+    <!-- 弹窗：上传文档至Gitee -->
+    <el-dialog v-model="dialogVisible" :title="isPull ? $t('Update doc from Gitee') : $t('Upload doc to Gitee')" width="25%"
+        style="border-radius: 15px;">
+        <el-form :model="gitUserData" label-position="top" label-width="75px">
+            <el-form-item :label="$t('Gitee UserName') + ':'">
+                <el-input v-model="gitUserData.gitUsername" />
+            </el-form-item>
+            <el-form-item :label="$t('Gitee Password') + ':'">
+                <el-input v-model="gitUserData.gitPassword" />
+            </el-form-item>
+            <el-form-item :label="$t('Commit message') + ':'" v-if="!isPull">
+                <el-input v-model="gitUserData.commitMsg" />
+            </el-form-item>
+        </el-form>
+        <div style="text-align: right;">
+            <el-button @click="dialogVisible = false">{{ $t('Cancel') }}</el-button>
+            <el-button type="primary" @click="handle">
+                {{ $t('Confirm') }}
+            </el-button>
+        </div>
+    </el-dialog>
 </template>
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
-import { getDocument, updateAllContent } from '../../api/document'
+import { getDocument, updateAllContent, updateGitDocument, pushDocument } from '../../api/document'
 import { mt } from '../../api/qualityassurance'
 import message from '../../utils/message'
 import deepCopy from 'deepcopy'
@@ -206,6 +239,60 @@ function submit() {
     })
 }
 
+// 文档更新的信息
+const isPull = ref(false)
+const dialogVisible = ref(false)
+const gitUserData = ref({
+    gitUsername: '',
+    gitPassword: '',
+    commitMsg: ''
+})
+function handle() {
+    if (isPull.value) {
+        pullGitee()
+        return
+    }
+    pushGitee()
+}
+// 从 Gitee 更新文档
+function onPull() {
+    isPull.value = true
+    dialogVisible.value = true
+}
+function pullGitee() {
+    if (!gitUserData.value.gitUsername || !gitUserData.value.gitUsername) {
+        message.warning('请填写 Gitee 用户信息')
+        return
+    }
+    updateGitDocument(docID, gitUserData.value.gitUsername, gitUserData.value.gitPassword).then((val) => {
+        if (val.code !== 200) {
+            message.error(val.msg)
+        } else {
+            dialogVisible.value = false
+            console.log(val.data);
+        }
+    })
+}
+// 上传文档至 Gitee
+function onPush() {
+    isPull.value = false
+    dialogVisible.value = true
+}
+function pushGitee() {
+    if (!gitUserData.value.gitUsername || !gitUserData.value.gitUsername || !gitUserData.value.commitMsg) {
+        message.warning('请填写完整的信息')
+        return
+    }
+    pushDocument(docID, gitUserData.value.gitUsername, gitUserData.value.gitPassword, gitUserData.value.commitMsg).then((val) => {
+        if (val.code !== 200) {
+            message.error(val.msg)
+        } else {
+            dialogVisible.value = false
+            console.log(val.data);
+        }
+    })
+}
+
 // 左侧机器翻译
 const mtData = ref('')
 const mtResultData = ref('')
@@ -304,7 +391,7 @@ function asideSC() {
     box-sizing: border-box;
     text-align: center;
     padding: 10px 0;
-    width: 75px;
+    width: 70px;
     color: #696969;
     cursor: pointer;
 

@@ -56,7 +56,7 @@ export function getDocument(id) {
     })
 }
 
-// 修改文档
+// 修改文档信息
 export function updateDocument(data) {
     return request({
         url: '/updateDocument',
@@ -65,7 +65,7 @@ export function updateDocument(data) {
     })
 }
 
-// 更新文档语句
+// 保存文档
 export function updateAllContent(documentId, contentList) {
     let data = {
         documentId,
@@ -74,6 +74,9 @@ export function updateAllContent(documentId, contentList) {
     return request({
         url: '/updateAllContent',
         method: 'POST',
+        headers: {
+            disableNprogress: true,
+        },
         data: JSON.stringify(data),
     })
 }
@@ -115,6 +118,35 @@ export function documentSearch(item) {
     return request({
         url: '/documentSearch',
         method: 'GET',
+        data: JSON.stringify(data),
+    })
+}
+
+// gitee更新文档
+export function updateGitDocument(id, gitUsername, gitPasswords) {
+    let data = {
+        id,
+        gitUsername,
+        gitPasswords,
+    }
+    return request({
+        url: '/updateGitDocument',
+        method: 'POST',
+        data: JSON.stringify(data),
+    })
+}
+
+// 上传文档至 Gitee
+export function pushDocument(id, gitUsername, gitPasswords, commitMsg) {
+    let data = {
+        id,
+        gitUsername,
+        gitPasswords,
+        commitMsg,
+    }
+    return request({
+        url: '/pushDocument',
+        method: 'POST',
         data: JSON.stringify(data),
     })
 }
