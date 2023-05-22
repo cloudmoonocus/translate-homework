@@ -34,6 +34,8 @@ const defineAsync = new Promise((resolve, reject) => {
                 reject()
             }
         })
+    } else {
+        resolve()
     }
 })
 defineAsync
