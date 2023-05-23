@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 
 import './assets/main.css'
+import './assets/icons/iconfont.css'
 import 'normalize.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import i18n from './i18n'
@@ -21,6 +22,13 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(createPinia())
 app.use(i18n)
 
+let loadingInstance = ElLoading.service({
+    fullscreen: true,
+    lock: true,
+    text: '加载中... 请稍后',
+    background: 'transparent',
+})
+
 // 获取用户信息
 const defineAsync = new Promise((resolve, reject) => {
     const userData = useUserStore()
@@ -30,19 +38,16 @@ const defineAsync = new Promise((resolve, reject) => {
             if (val.code === 200) {
                 userData.userInfor = val.data
                 resolve()
-            } else {
-                reject()
-            }
-        })
-    } else {
-        resolve()
-    }
+            } else reject()
+        }, reject)
+    } else resolve()
 })
 defineAsync
     .then(null, () => {
-        message.danger('发生了错误')
+        message.error('发生了错误')
     })
     .finally(() => {
+        loadingInstance.close()
         app.use(router)
         app.mount('#app')
     })

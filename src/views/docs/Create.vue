@@ -3,8 +3,8 @@
         <div class="cMain_head">
             <div class="cMain_head_left">
                 <el-select v-model="createWay" placeholder="Select">
+                    <el-option :label="$t('Import documents from Gitee repository')" value="url" />
                     <el-option :label="$t('Create documents from text')" value="text" />
-                    <el-option :label="$t('Create documents from URL')" value="url" />
                 </el-select>
                 <el-select v-model="sourceLan" placeholder="源语言" style="width: 100px;">
                     <el-option :label="val.label" :value="val.value" v-for="val in sourceLang" :key="val.value" />
@@ -17,7 +17,14 @@
                 </el-select>
             </div>
             <div class="cMain_head_right">
-                <el-button type="primary" @click="createDoc">{{ $t('Analysis') }}</el-button>
+                <el-button v-if="!userData.userInfor.giteeEmail && createWay === 'url'" type="primary" color="#c71d23"
+                    @click="createDocFromGitee">
+                    <template #icon>
+                        <i class="iconfont icon-gitee"></i>
+                    </template>
+                    {{ $t('Bind Gitee account') }}
+                </el-button>
+                <el-button v-else type="primary" @click="createDoc">{{ $t('Analysis') }}</el-button>
                 <el-button type="warning" plain v-if="createWay === 'text'" @click="text = ''">{{ $t('Reset text')
                 }}</el-button>
                 <el-button type="warning" plain v-else @click="reset">{{ $t('Reset URL') }}</el-button>
@@ -37,12 +44,13 @@
                 <el-input v-model="text" :autosize="{ minRows: 20, maxRows: 500 }" type="textarea"
                     :placeholder="$t('Please enter the text to be parsed here')" v-if="createWay === 'text'" />
                 <div v-else>
-                    <el-form :model="urlData" label-width="auto" label-position="top">
+                    <el-form :model="urlData" label-width="auto" label-position="top"
+                        :disabled="!userData.userInfor.giteeEmail">
                         <el-form-item :label="$t('Gitee UserName')">
                             <el-input v-model="urlData.gitUsername" style="width: 50%;" />
                         </el-form-item>
                         <el-form-item :label="$t('Gitee Password')">
-                            <el-input v-model="urlData.gitPassword" type="password" style="width: 50%;" />
+                            <el-input v-model="urlData.gitPassword" style="width: 50%;" />
                         </el-form-item>
                         <el-form-item :label="$t('Gitee URL')">
                             <el-input v-model="urlData.url" style="width: 50%;" />
@@ -62,13 +70,18 @@
 
 <script setup>
 import { ref } from 'vue'
-import { createByText, createByUrl } from '../../api/document'
+import { createByText, createByGitUrl } from '../../api/document'
 import message from '../../utils/message'
-import router from '../../router';
+import router from '../../router'
+import { useRoute } from 'vue-router'
 import { sourceLang, targetLang } from '../../assets/infor/languageList'
+import { useUserStore } from '../../stores/user'
+
+const userData = useUserStore()
+const route = useRoute()
 
 // 创建方式
-const createWay = ref('text')
+const createWay = ref('url')
 
 // 待解析的文本
 const text = ref('')
@@ -92,11 +105,26 @@ const docName = ref('')
 
 //创建文档
 function createDoc() {
-    if (createWay.value === 'text') {
-        createDocByText()
+    if (createWay.value === 'url') {
         return
     }
-    createDocByUrl()
+    createDocByText()
+}
+// TODO 从Gitee仓库导入
+function createDocFromGitee() {
+    // 如果没有绑定，跳转至信息页面进行绑定，query参数作用是用来绑定之后重定向到之前的页面
+    if (!userData.userInfor.giteeEmail) {
+        message.warning('请先绑定 Gitee 账户')
+        router.push({
+            path: '/user/infor',
+            query: {
+                from: route.fullPath,
+            }
+        })
+        return
+    }
+    // 创建文档
+
 }
 function createDocByText() {
     if (text.value === '') {

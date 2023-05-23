@@ -24,6 +24,9 @@ export const handleNetworkError = (errStatus) => {
             case 408:
                 errMessage = '请求超时'
                 break
+            case 416:
+                errMessage = '账户不存在或密码错误'
+                break
             case 500:
                 errMessage = '服务端出错'
                 break

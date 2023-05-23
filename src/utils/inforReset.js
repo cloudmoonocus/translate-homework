@@ -6,6 +6,5 @@ export function inforReset() {
     localStorage.clear()
     userData.id = ''
     userData.token = ''
-    userData.userName = ''
     router.replace('/signin')
 }

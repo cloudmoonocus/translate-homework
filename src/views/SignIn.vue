@@ -70,8 +70,8 @@ function submitForm() {
                     localStorage.setItem('userName', signInData.name)
                     userData.token = val.data.token
                     userData.id = val.data.id
-                    userData.userName = signInData.name
                     signInData.isVerify = false
+                    // 刷新以便获取用户信息
                     location.href = '/home'
                 }
             })

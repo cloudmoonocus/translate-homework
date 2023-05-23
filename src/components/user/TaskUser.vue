@@ -23,7 +23,7 @@
             v-if="userData.userInfor.task.length">
             <div v-for="val in userData.userInfor.task" :key="val.name">
                 <el-descriptions-item align="center" :label="$t('TaskName')">
-                    {{ val.name }}
+                    <span :title="val.name">{{ val.name }} </span>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Identity')">
                     <el-tag>{{ val.relation }}</el-tag>

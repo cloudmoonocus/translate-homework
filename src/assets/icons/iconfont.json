@@ -1,0 +1,23 @@
+{
+  "id": "4082477",
+  "name": "全球化翻译平台",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "431779",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "26267572",
+      "name": "gitee",
+      "font_class": "gitee",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}

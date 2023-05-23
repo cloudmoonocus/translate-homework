@@ -9,7 +9,7 @@ const requests = axios.create({
     timeout: 10 * 1000,
 })
 
-// 当请求失败后，自动重新请求，只有再请求2次失败后才真正失败
+// 当请求失败后，自动重新请求，只有再请求1次失败后才真正失败
 axiosRetry(requests, { retries: 2 })
 
 // 请求拦截器
@@ -44,10 +44,12 @@ requests.interceptors.response.use(
         return res.data
     },
     (error) => {
+        console.log(error)
+        nprogress.done()
         if (error.message.includes('exceeded')) {
             handleNetworkError(502)
-        } else handleNetworkError(error.response.status)
-        return Promise.reject(new Error(`请求失败:${error}`))
+        } else handleNetworkError(error.response.data.code)
+        return Promise.reject(`${error}`)
     }
 )
 

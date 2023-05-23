@@ -59,7 +59,7 @@
                 <el-icon>
                     <UserFilled />
                 </el-icon>
-                <span>{{ userData.userName }}</span>
+                <span>{{ userData.userInfor.username }}</span>
             </template>
             <el-menu-item index="/user/infor">
                 {{ $t('Personal information') }}

@@ -141,7 +141,7 @@ function changeDoc() {
             dialogVisible.value = false
             message.success('修改成功！')
         } else {
-            message.danger(val.msg)
+            message.error(val.msg)
         }
     })
 }

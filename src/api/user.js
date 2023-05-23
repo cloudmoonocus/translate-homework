@@ -53,21 +53,6 @@ export function getAllInfo(cu, size = 999) {
     })
 }
 
-// 修改密码
-export function alterPassword(id, oldPassword, newPassword1, newPassword2) {
-    let data = {
-        'id': id,
-        'oldPassword': oldPassword,
-        'newPassword1': newPassword1,
-        'newPassword2': newPassword2,
-    }
-    return request({
-        url: '/alterPassword',
-        method: 'POST',
-        data: data,
-    })
-}
-
 //修改用户信息
 export function changeInfo(data) {
     return request({
@@ -88,8 +73,8 @@ export function addUserAdmin(username, password, email, role) {
     }
     return request({
         url: '/addUserAdmin',
-        data: JSON.stringify(data),
         method: 'POST',
+        data: JSON.stringify(data),
     })
 }
 
@@ -100,7 +85,21 @@ export function deleteUserId(id) {
     }
     return request({
         url: '/deleteUserById',
-        data: JSON.stringify(data),
         method: 'POST',
+        data: JSON.stringify(data),
+    })
+}
+
+// 绑定gitee账户
+export function bindingGitee(userId, email, password) {
+    let data = {
+        userId,
+        email,
+        password,
+    }
+    return request({
+        url: '/bindingGitee',
+        method: 'POST',
+        data: JSON.stringify(data),
     })
 }

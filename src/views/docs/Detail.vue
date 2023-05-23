@@ -61,7 +61,7 @@
                             <el-button :icon="Search" @click="asideSC" />
                         </template>
                     </el-input>
-                    <el-empty :description="$t('None')" />
+                    <el-empty v-if="!scResultData" :description="$t('None')" />
                     <el-card style="margin-top: 5px; margin-bottom: 15px;" shadow="hover" v-for="val in scResultData">
                         <template #header>
                             <span style="color: #ff0000;">{{ val.error }}</span>

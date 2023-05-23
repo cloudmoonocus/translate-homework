@@ -139,7 +139,8 @@ export default {
     'Recent tasks': 'Recent tasks',
     'Identity': 'Identity',
     'Create documents from text': 'Create documents from text',
-    'Create documents from URL': 'Create documents from URL',
+    'Create documents from Gitee URL': 'Create documents from Gitee URL',
+    'Import documents from Gitee repository': 'Import documents from Gitee repository',
     'Check': 'Check',
     'Checking': 'Check',
     'Word': 'Word',
@@ -158,4 +159,5 @@ export default {
     'Update doc from Gitee': 'Update doc from Gitee',
     'Upload doc to Gitee': 'Upload doc to Gitee',
     'Commit message': 'Commit message',
+    'Bind Gitee account': 'Bind Gitee account',
 }

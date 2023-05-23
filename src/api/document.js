@@ -1,9 +1,9 @@
 import request from './handle/axios'
 
 // 解析Url创建文档
-export function createByUrl(data) {
+export function createByGitUrl(data) {
     return request({
-        url: '/createByUrl',
+        url: '/createByGitUrl',
         method: 'post',
         data: JSON.stringify(data),
     })

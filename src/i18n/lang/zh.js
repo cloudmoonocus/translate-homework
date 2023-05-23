@@ -140,7 +140,8 @@ export default {
     'Recent tasks': '最近任务',
     'Identity': '身份',
     'Create documents from text': '根据文本创建文档',
-    'Create documents from URL': '根据 URL 创建文档',
+    'Create documents from Gitee URL': '根据 Gitee URL 创建文档',
+    'Import documents from Gitee repository': '从 Gitee 仓库导入文档',
     'Check': '查看',
     'Checking': '检查',
     'Word': '词数',
@@ -159,4 +160,5 @@ export default {
     'Update doc from Gitee': '从 Gitee 更新文档',
     'Upload doc to Gitee': '上传文档至 Gitee',
     'Commit message': '提交信息',
+    'Bind Gitee account': '绑定 Gitee',
 }
