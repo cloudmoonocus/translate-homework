@@ -37,9 +37,9 @@ export function getAllTask(cp, pageSize = 999) {
 }
 
 // 获取用户和任务的对应关系
-export function getRelation(cu, pageSize = 999) {
+export function getRelation(currentPage, pageSize = 999) {
     return request({
-        url: '/relation?currentPage=' + cu + '&pageSize=' + pageSize,
+        url: '/relation?currentPage=' + currentPage + '&pageSize=' + pageSize,
         method: 'GET',
     })
 }

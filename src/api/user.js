@@ -46,9 +46,9 @@ export function getInfo(id) {
 }
 
 // 获取全部信用户息
-export function getAllInfo(cu, size = 999) {
+export function getAllInfo(currentPage, size = 999) {
     return request({
-        url: '/getAllInfo?currentPage=' + cu + '&pageSize=' + size,
+        url: '/getAllInfo?currentPage=' + currentPage + '&pageSize=' + size,
         method: 'GET',
     })
 }
@@ -101,5 +101,13 @@ export function bindingGitee(userId, email, password) {
         url: '/bindingGitee',
         method: 'POST',
         data: JSON.stringify(data),
+    })
+}
+
+// 获取该Gitee的所有仓库
+export function getAllGiteeRepository(id, currentPage, size = 999) {
+    return request({
+        url: '/getAllGiteeRepository?id=' + id + '&currentPage=' + currentPage + '&pageSize=' + size,
+        method: 'GET',
     })
 }

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1433749",
+      "name": "fork",
+      "font_class": "fork",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "10201633",
+      "name": "代码管理",
+      "font_class": "daimaguanli",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
       "icon_id": "431779",
       "name": "github",
       "font_class": "github",

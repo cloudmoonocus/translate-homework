@@ -161,4 +161,7 @@ export default {
     'Upload doc to Gitee': '上传文档至 Gitee',
     'Commit message': '提交信息',
     'Bind Gitee account': '绑定 Gitee',
+    'Select branch to check': '选择分支查看',
+    'Import': '导入',
+    'Are you sure you want to import this document?': '是否确定要导入此文档？',
 }

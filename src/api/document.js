@@ -37,9 +37,9 @@ export function deleteDocumentById(id) {
 }
 
 // 获取文档列表
-export function getAllDocument(cu, pagesize = 999999) {
+export function getAllDocument(currentPage, pagesize = 999999) {
     return request({
-        url: '/getAllDocument?currentPage=' + cu + '&pageSize=' + pagesize,
+        url: '/getAllDocument?currentPage=' + currentPage + '&pageSize=' + pagesize,
         method: 'GET',
     })
 }
@@ -148,5 +148,27 @@ export function pushDocument(id, gitUsername, gitPasswords, commitMsg) {
         url: '/pushDocument',
         method: 'POST',
         data: JSON.stringify(data),
+    })
+}
+
+// 获取该仓库所有分支
+export function getAllBranch(fullName) {
+    return request({
+        url: '/getAllBranch?fullName=' + fullName,
+        method: 'GET',
+        headers: {
+            disableNprogress: true,
+        },
+    })
+}
+
+// 获取仓库目录
+export function getRepositoryFile(fullName, branch = 'master', path = '/') {
+    return request({
+        url: '/getRepositoryFile?fullName=' + fullName + '&branch=' + branch + '&path=' + path,
+        method: 'GET',
+        headers: {
+            disableNprogress: true,
+        },
     })
 }

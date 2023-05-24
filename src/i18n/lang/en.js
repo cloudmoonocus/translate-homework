@@ -160,4 +160,7 @@ export default {
     'Upload doc to Gitee': 'Upload doc to Gitee',
     'Commit message': 'Commit message',
     'Bind Gitee account': 'Bind Gitee account',
+    'Select branch to check': 'Select branch to check',
+    'Import': 'Import',
+    'Are you sure you want to import this document?': 'Are you sure you want to import this document?',
 }
