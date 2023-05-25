@@ -44,7 +44,6 @@ requests.interceptors.response.use(
         return res.data
     },
     (error) => {
-        console.log(error)
         nprogress.done()
         if (error.message.includes('exceeded')) {
             handleNetworkError(502)

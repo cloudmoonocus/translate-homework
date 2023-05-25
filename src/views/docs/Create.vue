@@ -8,39 +8,43 @@
                     <el-option :label="$t('Create documents from text')" value="text" />
                 </el-select>
                 <template v-if="createWay === 'text'">
-                    <el-select v-model="sourceLang" placeholder="源语言" style="width: 100px;">
+                    <el-select v-model="sourceLan" placeholder="源语言" style="width: 100px;">
                         <el-option :label="val.label" :value="val.value" v-for="val in sourceLang" :key="val.value" />
                     </el-select>
                     <el-icon>
                         <Switch />
                     </el-icon>
-                    <el-select v-model="targetLang" placeholder="目标语言" style="width: 100px;">
+                    <el-select v-model="targetLan" placeholder="目标语言" style="width: 100px;">
                         <el-option :label="val.label" :value="val.value" v-for="val in targetLang" :key="val.value" />
                     </el-select>
                 </template>
             </div>
             <div class="cMain_head_right">
-                <el-button v-if="!userData.userInfor.giteeEmail && createWay === 'url'" type="primary" color="#c71d23"
-                    @click="bindGitee">
-                    <template #icon>
-                        <i class="iconfont icon-gitee"></i>
-                    </template>
-                    {{ $t('Bind Gitee account') }}
-                </el-button>
                 <template v-if="createWay === 'text'">
                     <el-button type="primary" @click="createDocByText">{{ $t('Analysis')
                     }}</el-button>
                     <el-button type="warning" plain @click="text = ''">{{ $t('Reset text')
                     }}</el-button>
                     <el-button type="warning" plain @click="() => {
-                            sourceLang = 'zh'
-                            targetLang = 'en'
+                            sourceLan = 'zh'
+                            targetLan = 'en'
                         }">{{ $t('Reset language') }}</el-button>
                 </template>
             </div>
         </div>
         <!-- 通过导入仓库创建 -->
         <div class="cMain_ctx cMain_gitee" v-show="createWay === 'url'">
+            <!-- 骨架屏 -->
+            <el-skeleton :rows="10" v-if="userData.userInfor.giteeEmail" animated :loading="isLoading" :throttle="1000"
+                style="--el-fill-color: #dedfe0;--el-fill-color-darker:#f4f4f5" />
+            <el-empty description=" " v-else>
+                <el-button type="primary" color="#c71d23" @click="bindGitee">
+                    <template #icon>
+                        <i class="iconfont icon-gitee"></i>
+                    </template>
+                    {{ $t('Bind Gitee account') }}
+                </el-button>
+            </el-empty>
             <div class="cMain_gitee_item" v-for="rep in giteeRepository">
                 <div class="cMain_gitee_item_left">
                     <div style="display: flex;align-items: center;gap: 10px;">
@@ -77,7 +81,7 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item v-for="branch in branchList" icon="Paperclip"
-                                    :command="[branch.name, rep.full_name, '/']">
+                                    :command="[branch.name, rep.full_name, '/', false]">
                                     {{ branch.name }}
                                 </el-dropdown-item>
                             </el-dropdown-menu>
@@ -103,9 +107,17 @@
         </div>
     </div>
     <!-- 仓库列表弹出框 -->
-    <el-dialog v-model="dialogVisible" :title="repositoryFile.simpleName" :show-close="false" destroy-on-close width="30%"
-        style="border-radius: 15px;">
+    <el-dialog v-model="dialogVisible" :title="repositoryFile.simpleName" :show-close="false" destroy-on-close width="50%"
+        style="border-radius: 15px;" @close="pathList = []">
         <div class="dialog">
+            <el-breadcrumb separator="/" style="margin-top: -15px;margin-bottom: 15px;">
+                <el-breadcrumb-item v-for="path in pathList">
+                    <a href="javascript:void(0);"
+                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, path, true])">{{ path === '/' ?
+                            repositoryFile.fullName.match(/\/(\S*)/)[1] :
+                            path.substring(path.lastIndexOf('/') + 1, path.length) }}</a>
+                </el-breadcrumb-item>
+            </el-breadcrumb>
             <div class="dialog_item" v-for="file in repositoryFile.list">
                 <div class="dialog_item_left">
                     <el-icon style="font-size: 16px;">
@@ -113,11 +125,13 @@
                         <Document v-else />
                     </el-icon>
                     <span class="linkFork" v-if="file.type === 'dir'"
-                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, file.path])">
-                        {{ file.path }}
+                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, file.path, false])">
+                        {{ file.path.substring(file.path.lastIndexOf('/') +
+                            1, file.path.length) }}
                     </span>
                     <a class="linkFork" :href="file.htmlUrl" target="_blank" v-else>
-                        {{ file.path }}
+                        {{ file.path.substring(file.path.lastIndexOf('/') +
+                            1, file.path.length) }}
                     </a>
                 </div>
                 <el-button class="dialog_item_btn" size="small" v-if="file.type === 'file'"
@@ -125,19 +139,37 @@
                     {{ $t('Import') }}
                 </el-button>
             </div>
+            <el-empty :description="$t('No Files')" v-if="!repositoryFile.list.length" />
+        </div>
+    </el-dialog>
+    <el-dialog v-model="dialogVisibleInfor" destroy-on-close width="20%" style="border-radius: 15px;">
+        <el-form label-position="top">
+            <el-form-item :label="$t('Document title') + ':'">
+                <el-input v-model="docName" />
+            </el-form-item>
+            <el-form-item :label="$t('Original language') + ':'">
+                <el-select v-model="sourceLan" style="width: 100%;">
+                    <el-option :label="val.label" :value="val.value" v-for="val in sourceLang" :key="val.value" />
+                </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('Target language') + ':'">
+                <el-select v-model="targetLan" style="width: 100%;">
+                    <el-option :label="val.label" :value="val.value" v-for="val in targetLang" :key="val.value" />
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div style="text-align: right;">
+            <el-button @click="dialogVisibleInfor = false">{{ $t('Cancel') }}</el-button>
+            <el-button type="primary" @click="importDoc">
+                {{ $t('Confirm') }}
+            </el-button>
         </div>
     </el-dialog>
 </template>
 
 <script setup>
-// TODO gitee 未绑定仓库列表显示空状态
-// TODO 仓库生成改成骨架屏
-// TODO 仓库导入时候增加选择标题名称和源/目标语言
-// TODO 修改一下所有使用到分页的页面
-// TODO 语法检查里面<suggestion>标签变样式
-// TODO 任务提交，校对
 import { ref } from 'vue'
-import { createByText, getAllBranch, getRepositoryFile } from '../../api/document'
+import { createByText, getAllBranch, getRepositoryFile, createByGitUrl } from '../../api/document'
 import message from '../../utils/message'
 import router from '../../router'
 import { useRoute } from 'vue-router'
@@ -145,7 +177,6 @@ import { sourceLang, targetLang } from '../../assets/infor/languageList'
 import { useUserStore } from '../../stores/user'
 import { getAllGiteeRepository } from '../../api/user'
 import { useI18n } from 'vue-i18n'
-import { createByGitUrl } from '../../api/document'
 
 const userData = useUserStore()
 const route = useRoute()
@@ -158,10 +189,11 @@ const createWay = ref('url')
 const docName = ref('')
 
 // 源语言/目标语言
-const sourceLang = ref('zh')
-const targetLang = ref('en')
+const sourceLan = ref('zh')
+const targetLan = ref('en')
 
 // 获取仓库列表
+const isLoading = ref(true)
 const currentPage = ref(1)
 const pageSize = ref(10)
 const giteeRepository = ref([])
@@ -172,6 +204,7 @@ function update() {
             message.error(val.msg)
         } else {
             window.scrollTo(0, 0)
+            isLoading.value = false
             repositoryTotal.value = val.total
             giteeRepository.value = val.data
         }
@@ -200,14 +233,23 @@ function resetBranchList(isDown) {
 
 // 获取仓库文件
 const dialogVisible = ref(false)
+const pathList = ref([])
 const repositoryFile = ref({
     branch: '',
     fullName: '',
     simpleName: '',
     list: []
 })
-function jumpToFile([branch, fullName, path]) {
+function jumpToFile([branch, fullName, path, isBreadclick]) {
     if (branch === '...') return
+    // 点击面包屑
+    if (isBreadclick) {
+        let index = pathList.value.indexOf(path)
+        if (index === pathList.value.length - 1) {
+            return
+        }
+        pathList.value.splice(index + 1, pathList.value.length)
+    } else pathList.value.push(path)
     getRepositoryFile(fullName, branch, path).then((val) => {
         if (val.code !== 200) {
             message.error(val.msg)
@@ -225,13 +267,15 @@ function jumpToFile([branch, fullName, path]) {
 // 文本创建
 const text = ref('')
 function createDocByText() {
-    if (text.value === '') {
-        message.warning('请输入待解析的文本/URL')
+    if (docName.value === '') {
+        message.warning('请输入文档名称')
         return
     }
-    let name = docName.value
-    if (docName.value === '') name = Date.now()
-    createByText(name, sourceLang.value, targetLang.value, text.value).then((value) => {
+    if (text.value === '') {
+        message.warning('请输入待解析的文本')
+        return
+    }
+    createByText(docName.value, sourceLan.value, targetLan.value, text.value).then((value) => {
         if (value.code === 200) {
             reset()
             message.success('创建成功')
@@ -242,6 +286,8 @@ function createDocByText() {
     })
 }
 // gitee导入
+const dialogVisibleInfor = ref(false)
+const pathDoc = ref('')
 function bindGitee() {
     // 跳转至信息页面进行绑定，query参数作用是用来绑定之后重定向到之前的页面
     router.push({
@@ -263,26 +309,36 @@ function createByGiteeRep(path) {
         }
     )
         .then(() => {
-            const data = {
-                name: docName.value,
-                sourceLang: sourceLang.value,
-                targetLang: targetLang.value,
-                fullName: repositoryFile.value.fullName,
-                docUrl: path,
-                branch: repositoryFile.value.branch
-            }
-            createByGitUrl(data).then((val) => {
-                if (val.code !== 200) {
-                    message.error(val.msg)
-                } else {
-                    reset()
-                    message.success('导入成功！')
-                    router.push('/docs/list').then(() => {
-                        location.reload()
-                    })
-                }
-            })
+            dialogVisibleInfor.value = true
+            pathDoc.value = path
+        }).catch(() => {
+            // 取消逻辑
+            pathDoc.value = ''
         })
+}
+function importDoc() {
+    if (docName.value === '') {
+        message.warning('请输入文档名称')
+        return
+    }
+    const data = {
+        name: docName.value,
+        sourceLang: sourceLan.value,
+        targetLang: targetLan.value,
+        fullName: repositoryFile.value.fullName,
+        docUrl: pathDoc.value,
+        branch: repositoryFile.value.branch
+    }
+    createByGitUrl(data).then((val) => {
+        if (val.code !== 200) {
+            message.error(val.msg)
+        } else {
+            message.success('导入成功！')
+            router.push('/docs/list').then(() => {
+                location.reload()
+            })
+        }
+    })
 }
 
 // 清空信息
@@ -389,6 +445,14 @@ function reset() {
             align-items: flex-start;
             gap: 10px;
         }
+
+        &_btn {
+            margin-right: 25px;
+        }
     }
+}
+
+:deep(.el-skeleton__item) {
+    height: 25px;
 }
 </style>

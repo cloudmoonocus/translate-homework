@@ -115,6 +115,8 @@
 </template>
 
 <script setup>
+// TODO 语法检查里面<suggestion>标签变样式
+// TODO 任务提交，校对
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
@@ -219,7 +221,6 @@ function translateAll() {
     })
     Promise.all(promiseAsync).then((value) => {
         docData.value.contentList.forEach((val, index) => {
-            console.log();
             if (value[index].code !== 200) {
                 val.targetText = '翻译失败'
             } else val.targetText = value[index].data.translatedText
@@ -269,7 +270,6 @@ function pullGitee() {
             message.error(val.msg)
         } else {
             dialogVisible.value = false
-            console.log(val.data);
         }
     })
 }
@@ -288,7 +288,6 @@ function pushGitee() {
             message.error(val.msg)
         } else {
             dialogVisible.value = false
-            console.log(val.data);
         }
     })
 }

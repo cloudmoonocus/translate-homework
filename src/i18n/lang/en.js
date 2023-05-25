@@ -163,4 +163,5 @@ export default {
     'Select branch to check': 'Select branch to check',
     'Import': 'Import',
     'Are you sure you want to import this document?': 'Are you sure you want to import this document?',
+    'No Files': '暂无文件',
 }

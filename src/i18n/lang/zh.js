@@ -164,4 +164,5 @@ export default {
     'Select branch to check': '选择分支查看',
     'Import': '导入',
     'Are you sure you want to import this document?': '是否确定要导入此文档？',
+    'No Files': '暂无文件',
 }
