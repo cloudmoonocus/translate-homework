@@ -1,7 +1,11 @@
 <template>
     <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :ellipsis="false" :router="true" v-if="showKey">
         <!-- logo -->
-        <el-menu-item index="/home">G11N TranSpace</el-menu-item>
+        <div style="display: flex; align-items: center;cursor: pointer;" @click="$router.push('/')">
+            <img src="/favicon.png" alt="g11n" style="width: 40px;height: 40px;">
+            <h3 style="margin-left: 10px;">G11N TranSpace</h3>
+        </div>
+        <!-- <el-menu-item index="/home">G11N TranSpace</el-menu-item> -->
         <!-- 占位 -->
         <div class="flex-grow" />
         <!-- 首页 -->
