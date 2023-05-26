@@ -14,7 +14,7 @@
                     <el-tag v-else style="margin-right: 10px; margin-bottom: 10px;" v-for="sug in val.suggestion">{{ sug
                     }}</el-tag>
                 </el-card>
-                <h3 v-else style="text-align: center;margin-top: 15vh;">无任何语法错误</h3>
+                <h3 v-else style="text-align: center;margin-top: 15vh;">{{ $t('No grammatical errors') }}</h3>
             </div>
         </div>
     </div>

@@ -74,9 +74,6 @@ export function updateAllContent(documentId, contentList) {
     return request({
         url: '/updateAllContent',
         method: 'POST',
-        headers: {
-            disableNprogress: true,
-        },
         data: JSON.stringify(data),
     })
 }
@@ -96,20 +93,23 @@ export function updateContent(documentId, sentenceId, sourceText, targetText) {
     })
 }
 
-export function searchContent(id, lang, sourceText, targetText) {
-    let data = {
-        documentId,
-        sentenceId,
-        sourceText,
-        targetText,
-    }
+// 全局搜索句子
+export function searchAllContent(id, text) {
     return request({
-        url: '/searchContent',
-        method: 'POST',
-        data: JSON.stringify(data),
+        url: '/searchContent?id=' + id + '&text=' + text,
+        method: 'GET',
     })
 }
 
+// 文档内搜索句子
+export function searchDocContent(documentId, text) {
+    return request({
+        url: '/search/byIdAndText?documentId=' + documentId + '&text=' + text,
+        method: 'GET',
+    })
+}
+
+// 搜索文档
 export function documentSearch(item) {
     let data = {
         id: item.id,
@@ -122,12 +122,18 @@ export function documentSearch(item) {
     })
 }
 
+//下载翻译后的文档
+export function downloadDocument(docId) {
+    return request({
+        url: '/downloadDocument?id=' + docId,
+        method: 'GET',
+    })
+}
+
 // gitee更新文档
-export function updateGitDocument(id, gitUsername, gitPasswords) {
+export function updateGitDocument(id) {
     let data = {
         id,
-        gitUsername,
-        gitPasswords,
     }
     return request({
         url: '/updateGitDocument',
@@ -137,11 +143,10 @@ export function updateGitDocument(id, gitUsername, gitPasswords) {
 }
 
 // 上传文档至 Gitee
-export function pushDocument(id, gitUsername, gitPasswords, commitMsg) {
+export function pushDocument(id, path, commitMsg) {
     let data = {
         id,
-        gitUsername,
-        gitPasswords,
+        path,
         commitMsg,
     }
     return request({
@@ -156,19 +161,21 @@ export function getAllBranch(fullName) {
     return request({
         url: '/getAllBranch?fullName=' + fullName,
         method: 'GET',
-        headers: {
-            disableNprogress: true,
-        },
     })
 }
 
-// 获取仓库目录
+// 获取仓库目录+文件
 export function getRepositoryFile(fullName, branch = 'master', path = '/') {
     return request({
         url: '/getRepositoryFile?fullName=' + fullName + '&branch=' + branch + '&path=' + path,
         method: 'GET',
-        headers: {
-            disableNprogress: true,
-        },
+    })
+}
+
+// 获取仓库目录
+export function getRepositoryFolder(fullName, branch = 'master', path = '/') {
+    return request({
+        url: '/getRepositoryFolder?fullName=' + fullName + '&branch=' + branch + '&path=' + path,
+        method: 'GET',
     })
 }

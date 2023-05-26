@@ -2,7 +2,7 @@
     <div class="ta_main">
         <div class="ta_main_textarea">
             <el-input class="ta_main_textarea_item" v-model="sourceDoc" :rows="15"
-                :placeholder="$t('Please enter the text to be checked here')" clearable>
+                :placeholder="$t('Please enter the text to be checked here')" clearable @keyup.enter="handle">
                 <template #append>
                     <el-button :icon="SuccessFilled" @click="handle" />
                 </template>
@@ -14,10 +14,11 @@
                     </template>
                     <div style="display: flex; align-items: center; flex-wrap:wrap;">
                         <el-tag style="margin-right: 5px;" v-for="replace in val.replacements">{{ replace }}</el-tag>
+                        <span v-if="!val.replacements.length" style="color: #ccc;">{{ $t('No Suggetions') }}</span>
                     </div>
                     <div style="margin-top: 15px;">{{ val.suggestion }}</div>
                 </el-card>
-                <h3 v-else style="text-align: center;margin-top: 15vh;">无任何修改建议</h3>
+                <h3 v-else style="text-align: center;margin-top: 15vh;">{{ $t('No suggestions') }}</h3>
             </div>
         </div>
     </div>

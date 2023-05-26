@@ -56,7 +56,7 @@ export function getAllInfo(currentPage, size = 999) {
 //修改用户信息
 export function changeInfo(data) {
     return request({
-        url: '/changeinfo',
+        url: '/changeInfo',
         data: JSON.stringify(data),
         method: 'POST',
     })

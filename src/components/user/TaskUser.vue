@@ -17,7 +17,7 @@
                 </el-descriptions-item>
             </div>
         </el-descriptions>
-        <el-empty description="暂无贡献" class="uMain_right_recordEmpty" v-else />
+        <el-empty :description="$t('No contribution record')" class="uMain_right_recordEmpty" v-else />
         <!-- 最近任务 -->
         <el-descriptions :title="$t('Recent tasks')" :column="4" border class="uMain_right_tasks"
             v-if="userData.userInfor.task.length">
@@ -34,13 +34,14 @@
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Operation')">
-                    <el-button type="primary" plain :disabled="val.status === 'ed' || val.status === 'wait'"
+                    <el-button type="primary" plain
+                        :disabled="val.status === 'ed' || val.status === 'wait' || val.relation === 'creator'"
                         @click="checkDoc(val.data.document, val.taskId)">{{ $t('Check')
                         }}</el-button>
                 </el-descriptions-item>
             </div>
         </el-descriptions>
-        <el-empty description="暂无任务" class="uMain_right_tasksEmpty" v-else />
+        <el-empty :description="$t('No task record')" class="uMain_right_tasksEmpty" v-else />
     </div>
 </template>
 
@@ -48,20 +49,29 @@
 import router from '../../router';
 import { useUserStore } from '../../stores/user'
 import { getTask } from '../../api/task'
+import { getInfo } from '../../api/user'
 
 const userData = useUserStore()
 
 // 最近任务
 // 为任务添加信息
 const requestArray = []
-userData.userInfor.task.forEach((task) => {
-    requestArray.push(getTask(task.taskId))
-})
-Promise.all(requestArray).then((val) => {
-    userData.userInfor.task.forEach((task, index) => {
-        task.data = val[index].data
+const isLogin = !!localStorage.getItem('Authorization')
+if (isLogin) {
+    getInfo(localStorage.getItem('id')).then((val) => {
+        if (val.code === 200) {
+            userData.userInfor = val.data
+            userData.userInfor.task.forEach((task) => {
+                requestArray.push(getTask(task.taskId))
+            })
+            Promise.all(requestArray).then((val) => {
+                userData.userInfor.task.forEach((task, index) => {
+                    task.data = val[index].data
+                })
+            })
+        }
     })
-})
+}
 
 // 查看文档
 function checkDoc(docID, taskID) {

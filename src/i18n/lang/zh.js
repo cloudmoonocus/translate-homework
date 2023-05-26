@@ -165,4 +165,12 @@ export default {
     'Import': '导入',
     'Are you sure you want to import this document?': '是否确定要导入此文档？',
     'No Files': '暂无文件',
+    'Select upload directory': '选择上传目录',
+    'File name': '文件名',
+    'Download translated doc': '下载翻译文档',
+    'No suggestions': '无任何修改建议',
+    'No grammatical errors': '无任何语法错误',
+    'No translation suggestions': '无任何翻译建议',
+    'No contribution record': '暂无贡献记录',
+    'No task record': '暂无任务记录',
 }

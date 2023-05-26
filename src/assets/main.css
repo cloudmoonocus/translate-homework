@@ -30,3 +30,12 @@
 ::-webkit-scrollbar-corner {
     background: rgb(145, 145, 145);
 }
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(166, 4, 4);
+}

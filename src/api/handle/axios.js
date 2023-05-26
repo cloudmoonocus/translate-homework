@@ -1,7 +1,5 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
 import { handleNetworkError } from './errorHandle'
 
 const requests = axios.create({
@@ -17,12 +15,7 @@ requests.interceptors.request.use(
     (config) => {
         config.headers['Content-Type'] = 'application/json'
 
-        // 如果需要禁用请求进度条，在接口使用时候设置 disableNprogress: true 即可
-        if (!config.headers.disableNprogress) {
-            nprogress.start()
-        }
-
-        // 同理，判断是否需要携带 token
+        // 如果需要禁用携带 token，在接口使用时候设置 noTakeToken: true 即可
         if (!config.headers.noTakeToken) {
             config.headers.Authorization = localStorage.getItem('Authorization')
         }
@@ -37,14 +30,12 @@ requests.interceptors.request.use(
 // 响应拦截器
 requests.interceptors.response.use(
     (res) => {
-        nprogress.done()
         if (res.statusText !== 'OK') {
             handleNetworkError(res.data.code)
         }
         return res.data
     },
     (error) => {
-        nprogress.done()
         if (error.message.includes('exceeded')) {
             handleNetworkError(502)
         } else handleNetworkError(error.response.data.code)

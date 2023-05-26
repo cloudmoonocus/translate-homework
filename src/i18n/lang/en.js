@@ -41,6 +41,7 @@ export default {
     'Reset text': 'Reset text',
     'Reset language': 'Reset language',
     'Please enter the text to be translated here': 'Please enter the text to be translated here',
+    'Please enter the text to be checked here': 'Please enter the text to be checked here',
     'The target language text will be displayed here': 'The target language text will be displayed here',
     'Enter the text to be checked here': 'Enter the text to be checked here',
     'Enter the text that you want to provide a suggestion for. The suggested text is mainly a single word':
@@ -163,5 +164,13 @@ export default {
     'Select branch to check': 'Select branch to check',
     'Import': 'Import',
     'Are you sure you want to import this document?': 'Are you sure you want to import this document?',
-    'No Files': '暂无文件',
+    'No Files': 'No Files',
+    'Select upload directory': 'Select upload directory',
+    'File name': 'File name',
+    'Download translated doc': 'Download translated doc',
+    'No suggestions': 'No suggestions',
+    'No grammatical errors': 'No grammatical errors',
+    'No translation suggestions': 'No translation suggestions',
+    'No contribution record': 'No contribution record',
+    'No task record': 'No task record',
 }

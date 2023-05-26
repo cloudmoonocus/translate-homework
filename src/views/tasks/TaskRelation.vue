@@ -14,20 +14,25 @@
                     </el-tag>
                 </template>
             </el-table-column>
-            <!-- 右侧摁钮 -->
-            <el-table-column width="300" fixed="right" align="center">
+            <!-- 右侧摁钮(prop填入禁止合并的任意字段就可以合并) -->
+            <el-table-column width="300" prop="taskName" fixed="right" align="center">
                 <template #header>
                     <el-input v-model="search" :placeholder="$t('Search task')" clearable />
                 </template>
                 <template #default="scope">
-                    <el-button type="info" plain @click="checkDocContent(scope.row.documentId)">
-                        {{ $t('Document') }}
-                    </el-button>
-                    <el-button type="primary" plain @click="editTask(scope.row)">
-                        {{ $t('Edit') }}
-                    </el-button>
-                    <el-button type="danger" plain @click="onDeleteTask(scope.row.taskId)">
-                        {{ $t('Delete') }}
+                    <div style="margin-bottom: 15px;">
+                        <el-button plain @click="checkDocContent(scope.row.documentId)">
+                            {{ $t('Document') }}
+                        </el-button>
+                        <el-button type="primary" plain @click="editTask(scope.row)">
+                            {{ $t('Edit') }}
+                        </el-button>
+                        <el-button type="danger" plain @click="onDeleteTask(scope.row.taskId)">
+                            {{ $t('Delete') }}
+                        </el-button>
+                    </div>
+                    <el-button type="info" plain @click="downloadDoc(scope.row.documentId, scope.row.documentName)">
+                        {{ $t('Download translated doc') }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -57,11 +62,13 @@
 
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
-import { getRelation, submitTask, deleteTask } from '../../api/task'
+import { getRelation, deleteTask } from '../../api/task'
+import { downloadDocument } from '../../api/document'
 import { useUserStore } from '../../stores/user'
 import message from '../../utils/message'
-import { updateTask } from '../../api/task';
-import router from '../../router';
+import { updateTask } from '../../api/task'
+import router from '../../router'
+import { loadFile } from '../../utils/downloadFile'
 
 const userData = useUserStore()
 
@@ -137,6 +144,13 @@ function onDeleteTask(taskId) {
             update()
             message.success('删除成功')
         }
+    })
+}
+
+// 下载文档
+function downloadDoc(docId, docName) {
+    downloadDocument(docId).then((val) => {
+        loadFile(docName, val)
     })
 }
 

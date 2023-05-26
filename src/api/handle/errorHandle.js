@@ -8,6 +8,7 @@ export const handleNetworkError = (errStatus) => {
                 errMessage = '错误的请求'
                 break
             case 401:
+            case 402:
                 inforReset()
                 errMessage = '未授权，请登录'
                 break
@@ -46,7 +47,7 @@ export const handleNetworkError = (errStatus) => {
                 errMessage = 'HTTP 版本不支持该请求'
                 break
             default:
-                errMessage = `其他连接错误 --${errStatus}`
+                errMessage = `其他连接错误`
         }
     } else {
         errMessage = `无法连接到服务器!`

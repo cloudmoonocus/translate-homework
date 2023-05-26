@@ -81,6 +81,7 @@ function change() {
             message.success('修改成功！')
             clearInfor()
             dialogVisible.value = false
+            location.reload()
         })
     }
 }

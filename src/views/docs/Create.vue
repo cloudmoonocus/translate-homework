@@ -34,9 +34,56 @@
         </div>
         <!-- 通过导入仓库创建 -->
         <div class="cMain_ctx cMain_gitee" v-show="createWay === 'url'">
-            <!-- 骨架屏 -->
-            <el-skeleton :rows="10" v-if="userData.userInfor.giteeEmail" animated :loading="isLoading" :throttle="1000"
-                style="--el-fill-color: #dedfe0;--el-fill-color-darker:#f4f4f5" />
+            <el-skeleton :rows="10" v-if="userData.userInfor.giteeEmail" animated :loading="isLoading"
+                style="--el-fill-color: #dedfe0;--el-fill-color-darker:#f4f4f5">
+                <div class="cMain_gitee_item" v-for="rep in giteeRepository">
+                    <div class="cMain_gitee_item_left">
+                        <div style="display: flex;align-items: center;gap: 10px;">
+                            <i class="iconfont icon-daimaguanli" style="color: #9e9dad;" v-if="!rep.fork" />
+                            <i class="iconfont icon-fork" style="color: #9e9dad;" v-else />
+                            <a class="link" :href="'https://gitee.com/' + rep.owner.login" target="_blank">
+                                {{ rep.human_name.match(/(\S*)\//)[1] }}
+                            </a>
+                            <span style="color: #40485b;font-weight: bold;font-size: 17px;">/</span>
+                            <a class="link" :href="rep.html_url" target="_blank">
+                                {{ rep.human_name.match(/\/(\S*)/)[1] }}
+                            </a>
+                        </div>
+                        <span v-if="rep.fork">
+                            <span style="color: #6a6a6a;font-size: 13px;margin-left: 25px;">forked from：</span>
+                            <a class="linkFork" :href="'https://gitee.com/' + rep.parent.owner.login" target="_blank">
+                                {{ rep.parent.human_name.match(/(\S*)\//)[1] }}
+                            </a>
+                            <span style="color: #6a6a6a;font-weight: bold;font-size: 13px;"> / </span>
+                            <a class="linkFork" :href="rep.parent.html_url" target="_blank">
+                                {{ rep.parent.human_name.match(/\/(\S*)/)[1] }}
+                            </a>
+                        </span>
+                        <span style="color: #6a6a6a;font-size: 15px;margin-left: 25px;width: 80%;">
+                            {{ rep.description }}
+                        </span>
+                    </div>
+                    <div class="cMain_gitee_item_right">
+                        <el-dropdown trigger="click" max-height="200" placement="left" @visible-change="resetBranchList"
+                            @command="jumpToFile">
+                            <el-button type="primary" @click="getBranch(rep.full_name)">
+                                {{ $t('Select branch to check') }}
+                            </el-button>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item v-for="branch in branchList" icon="Paperclip"
+                                        :command="[branch.name, rep.full_name, '/', false]">
+                                        {{ branch.name }}
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+                </div>
+                <el-pagination layout="sizes, prev, pager, next" :page-sizes="[10, 20, 30, 50]" hide-on-single-page
+                    v-model:current-page="currentPage" @current-change="update" v-model:page-size="pageSize"
+                    @size-change="update" :total="repositoryTotal" />
+            </el-skeleton>
             <el-empty description=" " v-else>
                 <el-button type="primary" color="#c71d23" @click="bindGitee">
                     <template #icon>
@@ -45,53 +92,6 @@
                     {{ $t('Bind Gitee account') }}
                 </el-button>
             </el-empty>
-            <div class="cMain_gitee_item" v-for="rep in giteeRepository">
-                <div class="cMain_gitee_item_left">
-                    <div style="display: flex;align-items: center;gap: 10px;">
-                        <i class="iconfont icon-daimaguanli" style="color: #9e9dad;" v-if="!rep.fork" />
-                        <i class="iconfont icon-fork" style="color: #9e9dad;" v-else />
-                        <a class="link" :href="'https://gitee.com/' + rep.owner.login" target="_blank">
-                            {{ rep.human_name.match(/(\S*)\//)[1] }}
-                        </a>
-                        <span style="color: #40485b;font-weight: bold;font-size: 17px;">/</span>
-                        <a class="link" :href="rep.html_url" target="_blank">
-                            {{ rep.human_name.match(/\/(\S*)/)[1] }}
-                        </a>
-                    </div>
-                    <span v-if="rep.fork">
-                        <span style="color: #6a6a6a;font-size: 13px;margin-left: 25px;">forked from：</span>
-                        <a class="linkFork" :href="'https://gitee.com/' + rep.parent.owner.login" target="_blank">
-                            {{ rep.parent.human_name.match(/(\S*)\//)[1] }}
-                        </a>
-                        <span style="color: #6a6a6a;font-weight: bold;font-size: 13px;"> / </span>
-                        <a class="linkFork" :href="rep.parent.html_url" target="_blank">
-                            {{ rep.parent.human_name.match(/\/(\S*)/)[1] }}
-                        </a>
-                    </span>
-                    <span style="color: #6a6a6a;font-size: 15px;margin-left: 25px;width: 80%;">
-                        {{ rep.description }}
-                    </span>
-                </div>
-                <div class="cMain_gitee_item_right">
-                    <el-dropdown trigger="click" max-height="200" placement="left" @visible-change="resetBranchList"
-                        @command="jumpToFile">
-                        <el-button type="primary" @click="getBranch(rep.full_name)">
-                            {{ $t('Select branch to check') }}
-                        </el-button>
-                        <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item v-for="branch in branchList" icon="Paperclip"
-                                    :command="[branch.name, rep.full_name, '/', false]">
-                                    {{ branch.name }}
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
-                </div>
-            </div>
-            <el-pagination layout="sizes, prev, pager, next" :page-sizes="[10, 20, 30, 50]" hide-on-single-page
-                v-model:current-page="currentPage" @current-change="update" v-model:page-size="pageSize"
-                @size-change="update" :total="repositoryTotal" />
         </div>
         <!-- 通过文本创建 -->
         <div class="cMain_ctx cMain_text" v-show="createWay === 'text'">
@@ -107,41 +107,45 @@
         </div>
     </div>
     <!-- 仓库列表弹出框 -->
-    <el-dialog v-model="dialogVisible" :title="repositoryFile.simpleName" :show-close="false" destroy-on-close width="50%"
+    <el-dialog v-model="dialogVisible" :title="repositoryFile.simpleName" :show-close="false" destroy-on-close width="40%"
         style="border-radius: 15px;" @close="pathList = []">
         <div class="dialog">
             <el-breadcrumb separator="/" style="margin-top: -15px;margin-bottom: 15px;">
                 <el-breadcrumb-item v-for="path in pathList">
                     <a href="javascript:void(0);"
-                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, path, true])">{{ path === '/' ?
-                            repositoryFile.fullName.match(/\/(\S*)/)[1] :
-                            path.substring(path.lastIndexOf('/') + 1, path.length) }}</a>
+                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, path, true])">
+                        {{ path === '/' ? repositoryFile.fullName.match(/\/(\S*)/)[1] :
+                            path.substring(path.lastIndexOf('/') + 1, path.length) }}
+                    </a>
                 </el-breadcrumb-item>
             </el-breadcrumb>
-            <div class="dialog_item" v-for="file in repositoryFile.list">
-                <div class="dialog_item_left">
-                    <el-icon style="font-size: 16px;">
-                        <Folder v-if="file.type === 'dir'" />
-                        <Document v-else />
-                    </el-icon>
-                    <span class="linkFork" v-if="file.type === 'dir'"
-                        @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, file.path, false])">
-                        {{ file.path.substring(file.path.lastIndexOf('/') +
-                            1, file.path.length) }}
-                    </span>
-                    <a class="linkFork" :href="file.htmlUrl" target="_blank" v-else>
-                        {{ file.path.substring(file.path.lastIndexOf('/') +
-                            1, file.path.length) }}
-                    </a>
+            <div v-loading="folderLoading" element-loading-background="rgba(225, 230, 232, .5)">
+                <div class="dialog_item" v-for="file in repositoryFile.list">
+                    <div class="dialog_item_left">
+                        <el-icon style="font-size: 16px;">
+                            <Folder v-if="file.type === 'dir'" />
+                            <Document v-else />
+                        </el-icon>
+                        <span class="linkFork" v-if="file.type === 'dir'"
+                            @click="jumpToFile([repositoryFile.branch, repositoryFile.fullName, file.path, false])">
+                            {{ file.path.substring(file.path.lastIndexOf('/') +
+                                1, file.path.length) }}
+                        </span>
+                        <a class="linkFork" :href="file.htmlUrl" target="_blank" v-else>
+                            {{ file.path.substring(file.path.lastIndexOf('/') +
+                                1, file.path.length) }}
+                        </a>
+                    </div>
+                    <el-button class="dialog_item_btn" size="small" v-if="file.type === 'file'"
+                        @click="createByGiteeRep(file.path)">
+                        {{ $t('Import') }}
+                    </el-button>
                 </div>
-                <el-button class="dialog_item_btn" size="small" v-if="file.type === 'file'"
-                    @click="createByGiteeRep(file.path)">
-                    {{ $t('Import') }}
-                </el-button>
             </div>
             <el-empty :description="$t('No Files')" v-if="!repositoryFile.list.length" />
         </div>
     </el-dialog>
+    <!-- 信息弹出框 -->
     <el-dialog v-model="dialogVisibleInfor" destroy-on-close width="20%" style="border-radius: 15px;">
         <el-form label-position="top">
             <el-form-item :label="$t('Document title') + ':'">
@@ -233,6 +237,7 @@ function resetBranchList(isDown) {
 
 // 获取仓库文件
 const dialogVisible = ref(false)
+const folderLoading = ref(false)
 const pathList = ref([])
 const repositoryFile = ref({
     branch: '',
@@ -250,6 +255,7 @@ function jumpToFile([branch, fullName, path, isBreadclick]) {
         }
         pathList.value.splice(index + 1, pathList.value.length)
     } else pathList.value.push(path)
+    folderLoading.value = true
     getRepositoryFile(fullName, branch, path).then((val) => {
         if (val.code !== 200) {
             message.error(val.msg)
@@ -258,6 +264,7 @@ function jumpToFile([branch, fullName, path, isBreadclick]) {
             repositoryFile.value.fullName = fullName
             repositoryFile.value.simpleName = fullName.match(/\/(\S*)/)[1]
             repositoryFile.value.list = val.data
+            folderLoading.value = false
             dialogVisible.value = true
         }
     })

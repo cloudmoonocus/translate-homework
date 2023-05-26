@@ -12,7 +12,7 @@
                     </template>
                     <span>{{ val.targetText }}</span>
                 </el-card>
-                <h3 v-else style="text-align: center;margin-top: 15vh;">无任何翻译建议</h3>
+                <h3 v-else style="text-align: center;margin-top: 15vh;">{{ $t('No translation suggestions') }}</h3>
             </div>
         </div>
     </div>

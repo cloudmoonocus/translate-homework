@@ -15,7 +15,23 @@
         <el-card v-for="docs in filterTableData" class="userManage_card" shadow="hover">
             <template #header>
                 <div style="display: flex; justify-content: space-between;">
-                    <span style="font-weight: bold;">{{ docs.name }}</span>
+                    <div style="display: flex;align-items: center;">
+                        <el-tooltip v-if="docs.docUrl" content="From gitee" placement="top">
+                            <i class="iconfont icon-gitee" style="margin-right: 10px;font-size: 25px;color: #c71d23;" />
+                        </el-tooltip>
+                        <el-tooltip v-else content="From text" placement="top">
+                            <el-icon style="margin-right: 10px;font-size: 25px;color: #585858;">
+                                <Document />
+                            </el-icon>
+                        </el-tooltip>
+                        <a style="font-weight: bold;" :href="'https://gitee.com/' + docs.fullName" target="_blank"
+                            v-if="docs.docUrl">
+                            {{ docs.name }}
+                        </a>
+                        <span style="font-weight: bold;" v-else>
+                            {{ docs.name }}
+                        </span>
+                    </div>
                     <div v-if="userData.userInfor.role === 'root'">
                         <el-button type="info" plain @click="checkDocContent(docs.id)">
                             {{ $t('Check') }}
