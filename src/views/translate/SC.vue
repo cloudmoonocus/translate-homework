@@ -12,7 +12,7 @@
                     </template>
                     <el-tag v-if="val.suggestion === 'No suggestions'">{{ val.suggestion }}</el-tag>
                     <el-tag v-else style="margin-right: 10px; margin-bottom: 10px;" v-for="sug in val.suggestion">{{ sug
-                    }}</el-tag>
+                                            }}</el-tag>
                 </el-card>
                 <h3 v-else style="text-align: center;margin-top: 15vh;">{{ $t('No grammatical errors') }}</h3>
             </div>
@@ -24,7 +24,7 @@
 import HeaderMenu from '../../components/translate/HeaderMenu.vue'
 import { languageList } from '../../assets/infor/languageList'
 import { ref } from 'vue'
-import { hunspell } from '../../api/qualityassurance'
+import { hunspell } from '../../api/translate'
 import message from '../../utils/message'
 
 const sourceDoc = ref('')

@@ -82,8 +82,8 @@
                             <div class="card_header">
                                 <span class="card_header_text">{{ ct.sourceText }}</span>
                                 <el-button class="card_header_btn" type="primary" @click="onMT(ct.sourceText, index)">{{
-                                    $t('MT')
-                                }}</el-button>
+                                                                    $t('MT')
+                                                                    }}</el-button>
                             </div>
                         </template>
                         <div class="card_content">
@@ -105,8 +105,8 @@
                                         </template>
                                         <div style="display: flex; align-items: center; flex-wrap:wrap;">
                                             <el-tag style="margin-right: 5px;" v-for="replace in val.replacements">{{
-                                                replace
-                                            }}</el-tag>
+                                                                                            replace
+                                                                                            }}</el-tag>
                                             <span v-if="!val.replacements.length" style="color: #ccc;">
                                                 {{ $t('No Suggetions') }}
                                             </span>
@@ -150,13 +150,13 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { getDocument, updateAllContent, updateGitDocument, pushDocument, getRepositoryFolder, searchDocContent } from '../../api/document'
-import { mt } from '../../api/qualityassurance'
+import { mt } from '../../api/translate'
 import message from '../../utils/message'
 import deepCopy from 'deepcopy'
 import { submitTask } from '../../api/task'
 import { useUserStore } from '../../stores/user'
 import router from '../../router'
-import { check } from '../../api/qualityassurance'
+import { check } from '../../api/translate'
 
 const userData = useUserStore()
 const route = useRoute()

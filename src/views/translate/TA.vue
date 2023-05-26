@@ -20,7 +20,7 @@
 
 <script setup>
 import HeaderMenu from '../../components/translate/HeaderMenu.vue'
-import { tmSearch } from '../../api/qualityassurance'
+import { tmSearch } from '../../api/translate'
 import { ref } from 'vue'
 import message from '../../utils/message'
 import { sourceLang, targetLang } from '../../assets/infor/languageList'

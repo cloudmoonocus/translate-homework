@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { check } from '../../api/qualityassurance'
+import { check } from '../../api/translate'
 import { ref } from 'vue'
 import message from '../../utils/message'
 import { SuccessFilled } from '@element-plus/icons-vue'
