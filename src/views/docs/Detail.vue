@@ -20,8 +20,7 @@
                     <div style="font-size: 14px;">{{ $t('Submit') }}</div>
                 </div>
                 <el-divider direction="vertical" v-if="userData.currentTaskID" />
-                <div class="menuIcon" @click="pullGitee" style="width: 120px;"
-                    v-if="userData.userInfor.role === 'root' && docData.docUrl">
+                <div class="menuIcon" @click="pullGitee" style="width: 120px;" v-if="docData.docUrl">
                     <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/pull.svg" alt="submit">
                     <div style="font-size: 14px;">{{ $t('Update doc from Gitee') }}</div>
                 </div>
@@ -82,8 +81,8 @@
                             <div class="card_header">
                                 <span class="card_header_text">{{ ct.sourceText }}</span>
                                 <el-button class="card_header_btn" type="primary" @click="onMT(ct.sourceText, index)">{{
-                                                                    $t('MT')
-                                                                    }}</el-button>
+                                    $t('MT')
+                                }}</el-button>
                             </div>
                         </template>
                         <div class="card_content">
@@ -105,8 +104,8 @@
                                         </template>
                                         <div style="display: flex; align-items: center; flex-wrap:wrap;">
                                             <el-tag style="margin-right: 5px;" v-for="replace in val.replacements">{{
-                                                                                            replace
-                                                                                            }}</el-tag>
+                                                replace
+                                            }}</el-tag>
                                             <span v-if="!val.replacements.length" style="color: #ccc;">
                                                 {{ $t('No Suggetions') }}
                                             </span>

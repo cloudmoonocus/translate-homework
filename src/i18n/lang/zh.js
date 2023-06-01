@@ -173,4 +173,5 @@ export default {
     'No translation suggestions': '无任何翻译建议',
     'No contribution record': '暂无贡献记录',
     'No task record': '暂无任务记录',
+    'Tasks': '任务',
 }

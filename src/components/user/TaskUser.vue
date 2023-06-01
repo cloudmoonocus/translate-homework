@@ -1,8 +1,13 @@
 <template>
     <div class="uMain_right">
         <!-- 贡献记录 -->
-        <el-descriptions :title="$t('Contribution record')" :column="3" border class="uMain_right_record"
-            v-if="Object.keys(userData.userInfor.record).length">
+        <el-descriptions
+            :title="$t('Contribution record')"
+            :column="3"
+            border
+            class="uMain_right_record"
+            v-if="Object.keys(userData.userInfor.record).length"
+        >
             <div v-for="(val, key) in userData.userInfor.record" :key="val.name">
                 <el-descriptions-item align="center" :label="$t('Language')">
                     {{ key }}
@@ -19,11 +24,16 @@
         </el-descriptions>
         <el-empty :description="$t('No contribution record')" class="uMain_right_recordEmpty" v-else />
         <!-- 最近任务 -->
-        <el-descriptions :title="$t('Recent tasks')" :column="4" border class="uMain_right_tasks"
-            v-if="userData.userInfor.task.length">
+        <el-descriptions
+            :title="$t('Recent tasks')"
+            :column="4"
+            border
+            class="uMain_right_tasks"
+            v-if="userData.userInfor.task.length"
+        >
             <div v-for="val in userData.userInfor.task" :key="val.name">
                 <el-descriptions-item align="center" :label="$t('TaskName')">
-                    <span :title="val.name">{{ val.name }} </span>
+                    <span :title="val.name">{{ val.name }}</span>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Identity')">
                     <el-tag>{{ val.relation }}</el-tag>
@@ -34,10 +44,14 @@
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" :label="$t('Operation')">
-                    <el-button type="primary" plain
-                        :disabled="val.status === 'ed' || val.status === 'wait' || val.relation === 'creator'"
-                        @click="checkDoc(val.data.document, val.taskId)">{{ $t('Check')
-                        }}</el-button>
+                    <el-button
+                        type="primary"
+                        plain
+                        :disabled="val.status === 'ed' && val.relation !== 'creator'"
+                        @click="checkDoc(val.data.document, val.taskId)"
+                    >
+                        {{ $t('Check') }}
+                    </el-button>
                 </el-descriptions-item>
             </div>
         </el-descriptions>
@@ -46,7 +60,7 @@
 </template>
 
 <script setup>
-import router from '../../router';
+import router from '../../router'
 import { useUserStore } from '../../stores/user'
 import { getTask } from '../../api/task'
 import { getInfo } from '../../api/user'
@@ -76,11 +90,13 @@ if (isLogin) {
 // 查看文档
 function checkDoc(docID, taskID) {
     userData.currentTaskID = taskID
-    router.push({
-        path: '/docDetail/' + docID
-    }).then(null, () => {
-        userData.currentTaskID = 0
-    })
+    router
+        .push({
+            path: '/docDetail/' + docID,
+        })
+        .then(null, () => {
+            userData.currentTaskID = 0
+        })
 }
 </script>
 

@@ -25,6 +25,9 @@ export const handleNetworkError = (errStatus) => {
             case 408:
                 errMessage = '请求超时'
                 break
+            case 411:
+                errMessage = '请先绑定 Gitee 账户'
+                break
             case 416:
                 errMessage = '账户不存在或密码错误'
                 break

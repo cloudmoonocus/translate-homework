@@ -159,6 +159,8 @@ function newTask() {
             message.success('创建成功')
             dialogVisible.value = false
             update()
+        } else {
+            message.error(value.msg)
         }
     })
 }

@@ -69,12 +69,6 @@ const routes = [
             {
                 path: 'create',
                 component: () => import('../views/docs/Create.vue'),
-                beforeEnter: (to, from, next) => {
-                    if (useUserStore().userInfor.role !== 'root') {
-                        message.warning('您没有权限访问该页面')
-                        next(from.path)
-                    } else next()
-                },
             },
             {
                 path: 'list',

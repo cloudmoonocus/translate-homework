@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <el-menu :default-active="activeIndex" class="menu" :router="true">
-            <el-menu-item index="/docs/create" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/docs/create">
                 <el-icon>
                     <DocumentAdd />
                 </el-icon>
@@ -24,7 +24,6 @@ import { ref, watch } from 'vue'
 import { useUserStore } from '../../stores/user'
 
 const router = useRouter()
-const userData = useUserStore()
 
 // 默认菜单
 const activeIndex = ref(router.currentRoute.value.path)

@@ -173,4 +173,5 @@ export default {
     'No translation suggestions': 'No translation suggestions',
     'No contribution record': 'No contribution record',
     'No task record': 'No task record',
+    'Tasks': 'Tasks',
 }

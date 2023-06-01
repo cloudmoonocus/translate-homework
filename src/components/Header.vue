@@ -1,22 +1,21 @@
 <template>
     <el-menu :default-active="activeIndex" class="menu" mode="horizontal" :ellipsis="false" :router="true" v-if="showKey">
         <!-- logo -->
-        <div style="display: flex; align-items: center;cursor: pointer;" @click="$router.push('/')">
-            <img src="/favicon.png" alt="g11n" style="width: 40px;height: 40px;">
-            <h3 style="margin-left: 10px;">G11N TranSpace</h3>
+        <div style="display: flex; align-items: center; cursor: pointer" @click="$router.push('/')">
+            <img src="/favicon.png" alt="g11n" style="width: 40px; height: 40px" />
+            <h3 style="margin-left: 10px">G11N TranSpace</h3>
         </div>
-        <!-- <el-menu-item index="/home">G11N TranSpace</el-menu-item> -->
         <!-- 占位 -->
         <div class="flex-grow" />
         <!-- 首页 -->
-        <el-menu-item index="/home">{{ $t("Index") }}</el-menu-item>
+        <el-menu-item index="/home">{{ $t('Index') }}</el-menu-item>
         <!-- 自助翻译 -->
         <el-sub-menu index="/tsl" v-if="!!userData.token">
             <template #title>
                 <el-icon>
                     <Promotion />
                 </el-icon>
-                <span>{{ $t("Self-translation") }}</span>
+                <span>{{ $t('Self-translation') }}</span>
             </template>
             <el-menu-item index="/tsl/mt">{{ $t('MT') }}</el-menu-item>
             <el-menu-item index="/tsl/vc">{{ $t('Grammar check') }}</el-menu-item>
@@ -27,13 +26,13 @@
         <el-menu-item index="/signin" v-if="!userData.token">{{ $t('Login') }}</el-menu-item>
         <!-- 注册 -->
         <el-menu-item index="/signup" v-if="!userData.token">{{ $t('Register') }}</el-menu-item>
-        <!-- 任务管理 -->
+        <!-- 任务 -->
         <el-sub-menu index="/tasks" v-if="!!userData.token">
             <template #title>
                 <el-icon>
                     <Grid />
                 </el-icon>
-                <span>{{ $t('Task management') }}</span>
+                <span>{{ $t('Tasks') }}</span>
             </template>
             <el-menu-item index="/tasks/handle">
                 {{ $t('Manage and create tasks') }}
@@ -42,15 +41,15 @@
                 {{ $t('Task relation') }}
             </el-menu-item>
         </el-sub-menu>
-        <!-- 文档翻译 -->
+        <!-- 文档 -->
         <el-sub-menu index="/docs" v-if="!!userData.token">
             <template #title>
                 <el-icon>
                     <Document />
                 </el-icon>
-                <span>{{ $t('Doc-translation') }}</span>
+                <span>{{ $t('Document') }}</span>
             </template>
-            <el-menu-item index="/docs/create" v-if="userData.userInfor.role === 'root'">
+            <el-menu-item index="/docs/create">
                 {{ $t('Create documents') }}
             </el-menu-item>
             <el-menu-item index="/docs/list">
@@ -71,7 +70,7 @@
             <el-menu-item index="/user/manage" v-if="userData.userInfor.role === 'root'">
                 {{ $t('user management') }}
             </el-menu-item>
-            <el-menu-item index="" style="color: rgb(235, 73, 73);" @click="logOut">
+            <el-menu-item index="" style="color: rgb(235, 73, 73)" @click="logOut">
                 {{ $t('Log out') }}
             </el-menu-item>
         </el-sub-menu>
@@ -80,7 +79,7 @@
         <!-- 语言 -->
         <el-sub-menu index="null">
             <template #title>
-                <img class="menu_image" src="../assets/images/globe.svg" alt="language">
+                <img class="menu_image" src="../assets/images/globe.svg" alt="language" />
                 <span>{{ $t('Language') }}</span>
             </template>
             <el-menu-item @click="changeLang('zh')">
@@ -136,7 +135,7 @@ function changeLang(lang) {
 // 退出
 function logOut() {
     loginout({
-        'id': localStorage.getItem('id')
+        'id': localStorage.getItem('id'),
     }).then((val) => {
         if (val.code === 200) {
             inforReset()

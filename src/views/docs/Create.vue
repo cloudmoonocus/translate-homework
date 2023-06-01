@@ -216,7 +216,7 @@ function update() {
 }
 if (userData.userInfor.giteeEmail) {
     update()
-} else message.message('绑定 Gitee 账户之后才可导入文档')
+} else message.warning('绑定 Gitee 账户之后才可导入文档')
 
 // 获取分支
 const branchList = ref([{ name: '...' }])
