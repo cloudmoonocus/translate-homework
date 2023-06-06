@@ -12,11 +12,11 @@
             </el-select>
         </div>
         <div class="hm_main_select" v-else-if="props.mode === 'SC'">
-            <div>请选择校对的语言：</div>
+            <div>{{ $t('Select proofreading language') }}</div>
             <el-select v-model="sourceLan" placeholder="源语言">
                 <el-option :label="val.label" :value="val.value" v-for="val in props.sourceLanList" :key="val.value" />
             </el-select>
-            <div style="flex: 0.5;"></div>
+            <div style="flex: 0.5"></div>
         </div>
         <div class="hm_main_btn">
             <el-button type="primary" round @click="$emit('handle', sourceLan, targetLan)">

@@ -142,6 +142,7 @@ export default {
     'Create documents from text': '根据文本创建文档',
     'Create documents from Gitee URL': '根据 Gitee URL 创建文档',
     'Import documents from Gitee repository': '从 Gitee 仓库导入文档',
+    'Select proofreading language': '请选择校对的语言：',
     'Check': '查看',
     'Checking': '检查',
     'Word': '词数',
@@ -174,4 +175,6 @@ export default {
     'No contribution record': '暂无贡献记录',
     'No task record': '暂无任务记录',
     'Tasks': '任务',
+    'Re-edit': '重新修改',
+    'No need to fill if password unchanged': '（不修改密码无需填写）',
 }

@@ -1,6 +1,7 @@
 import { inforReset } from '../../utils/inforReset'
 
-export const handleNetworkError = (errStatus) => {
+export const handleNetworkError = (data) => {
+    const errStatus = data.code
     let errMessage = '未知错误'
     if (errStatus) {
         switch (errStatus) {
@@ -25,12 +26,6 @@ export const handleNetworkError = (errStatus) => {
             case 408:
                 errMessage = '请求超时'
                 break
-            case 411:
-                errMessage = '请先绑定 Gitee 账户'
-                break
-            case 416:
-                errMessage = '账户不存在或密码错误'
-                break
             case 500:
                 errMessage = '服务端出错'
                 break
@@ -50,7 +45,7 @@ export const handleNetworkError = (errStatus) => {
                 errMessage = 'HTTP 版本不支持该请求'
                 break
             default:
-                errMessage = `其他连接错误`
+                errMessage = data.msg
         }
     } else {
         errMessage = `无法连接到服务器!`

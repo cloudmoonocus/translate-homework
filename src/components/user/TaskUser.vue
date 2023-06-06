@@ -43,11 +43,24 @@
                         {{ val.status }}
                     </el-tag>
                 </el-descriptions-item>
+                <!-- 查看 -->
                 <el-descriptions-item align="center" :label="$t('Operation')">
                     <el-button
+                        v-if="val.status === 'ed' && val.relation === 'translator'"
+                        type="danger"
+                        plain
+                        @click="backStatusw(val.taskId)"
+                    >
+                        {{ $t('Re-edit') }}
+                    </el-button>
+                    <el-button
+                        v-else
                         type="primary"
                         plain
-                        :disabled="val.status === 'ed' && val.relation !== 'creator'"
+                        :disabled="
+                            (val.status === 'ed' && val.relation !== 'creator') ||
+                            (val.status === 'translating' && val.relation === 'reviewer')
+                        "
                         @click="checkDoc(val.data.document, val.taskId)"
                     >
                         {{ $t('Check') }}
@@ -62,8 +75,9 @@
 <script setup>
 import router from '../../router'
 import { useUserStore } from '../../stores/user'
-import { getTask } from '../../api/task'
+import { backToTranslate, getTask } from '../../api/task'
 import { getInfo } from '../../api/user'
+import message from '../../utils/message'
 
 const userData = useUserStore()
 
@@ -71,7 +85,7 @@ const userData = useUserStore()
 // 为任务添加信息
 const requestArray = []
 const isLogin = !!localStorage.getItem('Authorization')
-if (isLogin) {
+function getInfoData() {
     getInfo(localStorage.getItem('id')).then((val) => {
         if (val.code === 200) {
             userData.userInfor = val.data
@@ -86,6 +100,9 @@ if (isLogin) {
         }
     })
 }
+if (isLogin) {
+    getInfoData()
+}
 
 // 查看文档
 function checkDoc(docID, taskID) {
@@ -97,6 +114,18 @@ function checkDoc(docID, taskID) {
         .then(null, () => {
             userData.currentTaskID = 0
         })
+}
+
+// 回退至翻译状态
+function backStatusw(taskID) {
+    backToTranslate(taskID).then((val) => {
+        if (val.code === 200) {
+            getInfoData()
+            message.success('回退成功')
+        } else {
+            message.error(val.msg)
+        }
+    })
 }
 </script>
 

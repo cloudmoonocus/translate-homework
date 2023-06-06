@@ -31,14 +31,14 @@ requests.interceptors.request.use(
 requests.interceptors.response.use(
     (res) => {
         if (res.statusText !== 'OK') {
-            handleNetworkError(res.data.code)
+            handleNetworkError(res.data)
         }
         return res.data
     },
     (error) => {
         if (error.message.includes('exceeded')) {
             handleNetworkError(502)
-        } else handleNetworkError(error.response.data.code)
+        } else handleNetworkError(error.response.data)
         return Promise.reject(`${error}`)
     }
 )

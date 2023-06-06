@@ -96,3 +96,15 @@ export function updateTask(id, name, document) {
         data: JSON.stringify(data),
     })
 }
+
+// 将任务回退至翻译状态
+export function backToTranslate(taskId) {
+    const data = {
+        id: taskId,
+    }
+    return request({
+        url: '/backToTranslate',
+        method: 'post',
+        data: JSON.stringify(data),
+    })
+}

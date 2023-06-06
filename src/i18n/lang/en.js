@@ -142,6 +142,7 @@ export default {
     'Create documents from text': 'Create documents from text',
     'Create documents from Gitee URL': 'Create documents from Gitee URL',
     'Import documents from Gitee repository': 'Import documents from Gitee repository',
+    'Select proofreading language': 'Select proofreading language:',
     'Check': 'Check',
     'Checking': 'Check',
     'Word': 'Word',
@@ -174,4 +175,6 @@ export default {
     'No contribution record': 'No contribution record',
     'No task record': 'No task record',
     'Tasks': 'Tasks',
+    'Re-edit': 'Re-edit',
+    'No need to fill if password unchanged': ' (No need to fill if password unchanged) ',
 }
