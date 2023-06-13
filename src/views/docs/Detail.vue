@@ -6,32 +6,50 @@
                     <Back />
                 </el-icon>
                 <div class="menuIcon" @click="saveDoc">
-                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/save.svg" alt="save">
-                    <div style="font-size: 14px;">{{ $t('Save Submit') }}</div>
+                    <img style="height: 40px; width: 40px" src="../../assets/images/menufonts/save.svg" alt="save" />
+                    <div style="font-size: 14px">{{ $t('Save Submit') }}</div>
                 </div>
                 <div class="menuIcon" @click="translateAll">
-                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/translate.svg"
-                        alt="translate">
-                    <div style="font-size: 14px;">{{ $t('MT') }}</div>
+                    <img
+                        style="height: 40px; width: 40px"
+                        src="../../assets/images/menufonts/translate.svg"
+                        alt="translate"
+                    />
+                    <div style="font-size: 14px">{{ $t('MT') }}</div>
                 </div>
                 <el-divider direction="vertical" />
                 <div class="menuIcon" @click="submit" v-if="userData.currentTaskID">
-                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/submit.svg" alt="submit">
-                    <div style="font-size: 14px;">{{ $t('Submit') }}</div>
+                    <img
+                        style="height: 40px; width: 40px"
+                        src="../../assets/images/menufonts/submit.svg"
+                        alt="submit"
+                    />
+                    <div style="font-size: 14px">{{ $t('Submit') }}</div>
                 </div>
                 <el-divider direction="vertical" v-if="userData.currentTaskID" />
-                <div class="menuIcon" @click="pullGitee" style="width: 120px;" v-if="docData.docUrl">
-                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/pull.svg" alt="submit">
-                    <div style="font-size: 14px;">{{ $t('Update doc from Gitee') }}</div>
+                <div class="menuIcon" @click="pullGitee" style="width: 120px" v-if="docData.docUrl">
+                    <img style="height: 40px; width: 40px" src="../../assets/images/menufonts/pull.svg" alt="submit" />
+                    <div style="font-size: 14px">{{ $t('Update doc from Gitee') }}</div>
                 </div>
-                <div class="menuIcon" @click="dialogVisible = true" style="width: 120px;"
-                    v-if="userData.userInfor.role === 'root' && docData.docUrl">
-                    <img style="height: 40px;width: 40px;" src="../../assets/images/menufonts/gitee.svg" alt="submit">
-                    <div style="font-size: 14px;">{{ $t('Upload doc to Gitee') }}</div>
+                <div
+                    class="menuIcon"
+                    @click="dialogVisible = true"
+                    style="width: 120px"
+                    v-if="userData.userInfor.role === 'root' && docData.docUrl"
+                >
+                    <img style="height: 40px; width: 40px" src="../../assets/images/menufonts/gitee.svg" alt="submit" />
+                    <div style="font-size: 14px">{{ $t('Upload doc to Gitee') }}</div>
                 </div>
             </div>
-            <el-input class="menuSearch" v-model="searchData" :prefix-icon="Search" :placeholder="$t('Doc Search')"
-                clearable size="large" @keyup.enter="search">
+            <el-input
+                class="menuSearch"
+                v-model="searchData"
+                :prefix-icon="Search"
+                :placeholder="$t('Doc Search')"
+                clearable
+                size="large"
+                @keyup.enter="search"
+            >
                 <template #append>
                     <el-button type="primary" :icon="Search" @click="search" />
                 </template>
@@ -40,55 +58,81 @@
         <el-container class="main_ctx">
             <el-aside width="400px" class="main_ctx_aside">
                 <div class="main_ctx_aside_mt">
-                    <el-input v-model="mtData" :placeholder="$t('Please enter the text to be translated here')" size="large"
-                        clearable @keyup.enter="asideMT">
+                    <el-input
+                        v-model="mtData"
+                        :placeholder="$t('Please enter the text to be translated here')"
+                        size="large"
+                        clearable
+                        @keyup.enter="asideMT"
+                    >
                         <template #append>
                             <el-button :icon="Search" @click="asideMT" />
                         </template>
                     </el-input>
                     <el-empty v-if="!mtResultData" :description="$t('None')" />
-                    <el-input v-else style="margin-top: 10px;" v-model="mtResultData" type="textarea"
-                        :autosize="{ minRows: 5, maxRows: 15 }" />
+                    <el-input
+                        v-else
+                        style="margin-top: 10px"
+                        v-model="mtResultData"
+                        type="textarea"
+                        :autosize="{ minRows: 5, maxRows: 15 }"
+                    />
                 </div>
                 <el-divider />
                 <div class="main_ctx_aside_sc">
-                    <el-input v-model="scData" :placeholder="$t('Please enter the text to be checked here')" size="large"
-                        clearable @keyup.enter="asideSC">
+                    <el-input
+                        v-model="scData"
+                        :placeholder="$t('Please enter the text to be checked here')"
+                        size="large"
+                        clearable
+                        @keyup.enter="asideSC"
+                    >
                         <template #append>
                             <el-button :icon="Search" @click="asideSC" />
                         </template>
                     </el-input>
-                    <el-empty v-if="!scResultData" :description="$t('None')" />
-                    <el-card style="margin-top: 5px; margin-bottom: 15px;" shadow="hover" v-for="val in scResultData">
+                    <el-empty v-if="!scResultData.length" :description="$t('None')" />
+                    <el-card style="margin-top: 5px; margin-bottom: 15px" shadow="hover" v-for="val in scResultData">
                         <template #header>
-                            <span style="color: #ff0000;">{{ val.error }}</span>
+                            <span style="color: #ff0000">{{ val.error }}</span>
                         </template>
-                        <div style="display: flex;align-items: center;flex-wrap: wrap;gap: 10px;">
+                        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px">
                             <el-tag v-for="replace in val.replacements">{{ replace }}</el-tag>
                         </div>
-                        <div style="margin-top: 15px;">
+                        <div style="margin-top: 15px">
                             {{ val.suggestion }}
                         </div>
                     </el-card>
                 </div>
             </el-aside>
             <el-main class="main_ctx_content">
-                <el-skeleton :rows="15" animated :loading="isLoading"
-                    style="--el-fill-color: #dedfe0;--el-fill-color-darker:#f4f4f5">
-                    <el-card :class="{ 'card': true, 'highlightCard': sentenceIdList.includes(ct.sentenceId) }"
-                        shadow="hover" v-for="(ct, index) in docData.contentList">
+                <el-skeleton
+                    :rows="15"
+                    animated
+                    :loading="isLoading"
+                    style="--el-fill-color: #dedfe0; --el-fill-color-darker: #f4f4f5"
+                >
+                    <el-card
+                        :class="{ 'card': true, 'highlightCard': sentenceIdList.includes(ct.sentenceId) }"
+                        shadow="hover"
+                        v-for="(ct, index) in filterData"
+                    >
                         <template #header>
                             <div class="card_header">
                                 <span class="card_header_text">{{ ct.sourceText }}</span>
-                                <el-button class="card_header_btn" type="primary" @click="onMT(ct.sourceText, index)">{{
-                                    $t('MT')
-                                }}</el-button>
+                                <el-button class="card_header_btn" type="primary" @click="onMT(ct.sourceText, index)">
+                                    {{ $t('MT') }}
+                                </el-button>
                             </div>
                         </template>
                         <div class="card_content">
                             <div class="card_content_left">
-                                <el-input autosize v-model="ct.targetText" type="textarea"
-                                    :placeholder="$t('Enter translated text here')"></el-input>
+                                <el-input
+                                    autosize
+                                    v-model="ct.targetText"
+                                    type="textarea"
+                                    :placeholder="$t('Enter translated text here')"
+                                ></el-input>
                             </div>
                             <el-popover placement="left" :title="$t('Proposal')" trigger="click" width="600px">
                                 <template #reference>
@@ -96,37 +140,52 @@
                                         {{ $t('Proofread') }}
                                     </el-button>
                                 </template>
-                                <div style="overflow: auto;max-height: 200px;padding: 0 10px;">
-                                    <el-card shadow="hover" v-for="val in ct.scResult" v-if="ct.scResult.length"
-                                        style="margin-bottom: 10px;">
+                                <div style="overflow: auto; max-height: 200px; padding: 0 10px">
+                                    <el-card shadow="hover" v-for="val in ct.scResult" style="margin-bottom: 10px">
                                         <template #header>
                                             <span>{{ val.error }}</span>
                                         </template>
-                                        <div style="display: flex; align-items: center; flex-wrap:wrap;">
-                                            <el-tag style="margin-right: 5px;" v-for="replace in val.replacements">{{
-                                                replace
-                                            }}</el-tag>
-                                            <span v-if="!val.replacements.length" style="color: #ccc;">
+                                        <div style="display: flex; align-items: center; flex-wrap: wrap">
+                                            <el-tag style="margin-right: 5px" v-for="replace in val.replacements">
+                                                {{ replace }}
+                                            </el-tag>
+                                            <span v-if="!val.replacements.length" style="color: #ccc">
                                                 {{ $t('No Suggetions') }}
                                             </span>
                                         </div>
-                                        <div style="margin-top: 15px;">{{ val.suggestion }}</div>
+                                        <div style="margin-top: 15px">{{ val.suggestion }}</div>
                                     </el-card>
-                                    <h4 v-else>{{ $t('No suggestions') }}</h4>
+                                    <h4 v-if="!ct.scResult.length">{{ $t('No suggestions') }}</h4>
                                 </div>
                             </el-popover>
                         </div>
                     </el-card>
+                    <!-- 分页器 -->
+                    <el-pagination
+                        style="margin: 15px auto; margin-left: 50%; transform: translateX(-50%)"
+                        background
+                        layout="sizes, prev, pager, next"
+                        v-model:page-size="pageSize"
+                        v-model:current-page="currentPage"
+                        :page-sizes="[10, 20, 50, 100]"
+                        :total="total"
+                    />
                 </el-skeleton>
             </el-main>
         </el-container>
     </el-container>
     <!-- 弹窗：上传文档至Gitee -->
-    <el-dialog v-model="dialogVisible" :title="$t('Upload doc to Gitee')" width="25%" style="border-radius: 15px;">
+    <el-dialog v-model="dialogVisible" :title="$t('Upload doc to Gitee')" width="25%" style="border-radius: 15px">
         <el-form :model="giteeUploadData" label-position="top" label-width="75px">
             <el-form-item :label="$t('Select upload directory') + ':'">
-                <el-cascader v-model="giteeUploadData.path" :options="options" :props="cascaderProps" clearable
-                    :show-all-levels="false" style="width: 100%;" />
+                <el-cascader
+                    v-model="giteeUploadData.path"
+                    :options="options"
+                    :props="cascaderProps"
+                    clearable
+                    :show-all-levels="false"
+                    style="width: 100%"
+                />
             </el-form-item>
             <el-form-item :label="$t('File name') + ':'">
                 <el-input v-model="giteeUploadData.fileName" />
@@ -135,7 +194,7 @@
                 <el-input v-model="giteeUploadData.commitMsg" />
             </el-form-item>
         </el-form>
-        <div style="text-align: right;">
+        <div style="text-align: right">
             <el-button @click="dialogVisible = false">{{ $t('Cancel') }}</el-button>
             <el-button type="primary" @click="pushGitee">
                 {{ $t('Confirm') }}
@@ -148,7 +207,14 @@
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
-import { getDocument, updateAllContent, updateGitDocument, pushDocument, getRepositoryFolder, searchDocContent } from '../../api/document'
+import {
+    getDocument,
+    updateAllContent,
+    updateGitDocument,
+    pushDocument,
+    getRepositoryFolder,
+    searchDocContent,
+} from '../../api/document'
 import { mt } from '../../api/translate'
 import message from '../../utils/message'
 import deepCopy from 'deepcopy'
@@ -156,6 +222,7 @@ import { submitTask } from '../../api/task'
 import { useUserStore } from '../../stores/user'
 import router from '../../router'
 import { check } from '../../api/translate'
+import { computed } from 'vue'
 
 const userData = useUserStore()
 const route = useRoute()
@@ -169,16 +236,25 @@ if (userData.currentTaskID === 0 && !userData.userInfor.role === 'root') {
 }
 
 // 获取文档信息
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(10)
 const isLoading = ref(true)
 const docData = ref({})
 getDocument(docID).then((val) => {
     if (val.code === 200) {
         isLoading.value = false
         docData.value = val.data
-        docData.value.contentList.forEach((val) => {
+        total.value = val.data.contentList.length
+    }
+})
+const filterData = computed(() => {
+    docData.value.contentList
+        .slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value)
+        .forEach((val) => {
             val.scResult = []
         })
-    }
+    return docData.value.contentList.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value)
 })
 
 // 单句机器翻译
@@ -232,11 +308,13 @@ onBeforeUnmount(() => {
 // 翻译整个文档
 function translateAll() {
     let promiseAsync = []
-    docData.value.contentList.forEach((val) => {
-        let text = val.sourceText
-        if (text === '') text = 'null'
-        promiseAsync.push(mt(text, docData.value.sourceLang, docData.value.targetLang))
-    })
+    docData.value.contentList
+        .slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value)
+        .forEach((val) => {
+            let text = val.sourceText
+            if (text === '') text = 'null'
+            promiseAsync.push(mt(text, docData.value.sourceLang, docData.value.targetLang))
+        })
     Promise.all(promiseAsync).then((value) => {
         docData.value.contentList.forEach((val, index) => {
             if (value[index].code !== 200) {
@@ -292,7 +370,7 @@ function pushGitee() {
     if (!giteeUploadData.value.path || !giteeUploadData.value.commitMsg) {
         return message.warning('请填写完整的信息')
     }
-    const reg = new RegExp('[\\\\/:*?\"<>|]')
+    const reg = new RegExp('[\\\\/:*?"<>|]')
     if (reg.test(giteeUploadData.value.fileName)) {
         return message.warning('文件名不能包含下列任何字符之一：\\/:*?"<>|')
     }
@@ -319,10 +397,12 @@ const cascaderProps = {
     lazyLoad(node, resolve) {
         const { level } = node
         if (level === 0) {
-            resolve([{
-                value: '/',
-                label: 'root',
-            }])
+            resolve([
+                {
+                    value: '/',
+                    label: 'root',
+                },
+            ])
         } else {
             getRepositoryFolder(docData.value.fullName, docData.value.branch, node.value).then((val) => {
                 if (val.code !== 200) {
@@ -336,7 +416,6 @@ const cascaderProps = {
                 }
             })
         }
-
     },
 }
 
@@ -361,7 +440,7 @@ function asideMT() {
 
 // 左侧语法检查
 const scData = ref('')
-const scResultData = ref('')
+const scResultData = ref([])
 function asideSC() {
     if (scData.value === '') {
         message.warning('请输入需要检查的内容')
@@ -490,7 +569,7 @@ watch(searchData, () => {
     &:hover {
         border: 1px solid #79bbff;
         border-radius: 10px;
-        color: #409EFF;
+        color: #409eff;
     }
 }
 
@@ -537,6 +616,7 @@ watch(searchData, () => {
 }
 
 .highlightCard {
-    box-shadow: rgba(194, 97, 97, 0.4) 0px 0px 0px 2px, rgba(207, 74, 74, 0.65) 0px 4px 6px -1px, rgba(205, 45, 45, 0.08) 0px 1px 0px inset;
+    box-shadow: rgba(194, 97, 97, 0.4) 0px 0px 0px 2px, rgba(207, 74, 74, 0.65) 0px 4px 6px -1px,
+        rgba(205, 45, 45, 0.08) 0px 1px 0px inset;
 }
 </style>
