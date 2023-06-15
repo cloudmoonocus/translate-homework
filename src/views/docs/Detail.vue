@@ -167,7 +167,7 @@
                         layout="sizes, prev, pager, next"
                         v-model:page-size="pageSize"
                         v-model:current-page="currentPage"
-                        :page-sizes="[10, 20, 50, 100]"
+                        :page-sizes="[10, 20, 50]"
                         :total="total"
                     />
                 </el-skeleton>
